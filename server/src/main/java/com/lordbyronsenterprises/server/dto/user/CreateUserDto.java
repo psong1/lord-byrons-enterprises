@@ -17,6 +17,10 @@ public class CreateUserDto {
     @Size(min = 4)
     private String username;
 
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email")
+    private String email;
+
     @NotBlank(message = "Password is required")
     @Size(min = 8)
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$",

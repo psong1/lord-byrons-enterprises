@@ -1,6 +1,7 @@
 package com.lordbyronsenterprises.server.mapper;
 
-import com.lordbyronsenterprises.server.dto.user.*;
+import com.lordbyronsenterprises.dto.user.*;
+import com.lordbyronsenterprises.server.dto.user.UserDto;
 import com.lordbyronsenterprises.server.model.User;
 import org.springframework.stereotype.Component;
 
