@@ -26,7 +26,7 @@ public class User {
     @Email(message = "Invalid email")
     private String email;
 
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = "Password is required")
     @Size(min = 8)
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$",
         message = "Passwords must be at least 8 characters and include a digit, a lowercase and an uppercase letter")
