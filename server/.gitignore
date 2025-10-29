@@ -31,5 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
-ECOMMERCE_ENTITIES.md
-USER_CONTROLLER_EXPLANATION.md
+.DS_Store

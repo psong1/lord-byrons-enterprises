@@ -1,4 +1,4 @@
-package com.lordbyronsenterprises.server.model;
+package com.lordbyronsenterprises.server.order;
 
 import jakarta.persistence.Embeddable;
 import lombok.Data;

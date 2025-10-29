@@ -1,6 +1,5 @@
-package com.lordbyronsenterprises.server.repository;
+package com.lordbyronsenterprises.server.user;
 
-import com.lordbyronsenterprises.server.model.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

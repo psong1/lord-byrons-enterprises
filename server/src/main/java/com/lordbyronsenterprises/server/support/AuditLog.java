@@ -1,4 +1,4 @@
-package com.lordbyronsenterprises.server.model;
+package com.lordbyronsenterprises.server.support;
 
 import com.lordbyronsenterprises.server.user.User;
 import jakarta.persistence.*;

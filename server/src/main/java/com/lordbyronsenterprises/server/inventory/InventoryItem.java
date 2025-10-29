@@ -1,4 +1,4 @@
-package com.lordbyronsenterprises.server.model;
+package com.lordbyronsenterprises.server.inventory;
 
 import com.lordbyronsenterprises.server.product.ProductVariant;
 import jakarta.persistence.*;
@@ -42,5 +42,13 @@ public class InventoryItem {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = Instant.now();
+    }
+
+    public enum StockMovementType {
+        IN,
+        OUT,
+        ADJUSTMENT,
+        RESERVATION,
+        RETURN
     }
 }

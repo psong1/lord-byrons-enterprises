@@ -1,6 +1,5 @@
-package com.lordbyronsenterprises.server.model;
+package com.lordbyronsenterprises.server.user;
 
-import com.lordbyronsenterprises.server.user.User;
 import lombok.Data;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

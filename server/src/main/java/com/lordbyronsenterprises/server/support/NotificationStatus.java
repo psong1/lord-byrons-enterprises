@@ -1,4 +1,4 @@
-package com.lordbyronsenterprises.server.model;
+package com.lordbyronsenterprises.server.support;
 
 public enum NotificationStatus {
     QUEUED,

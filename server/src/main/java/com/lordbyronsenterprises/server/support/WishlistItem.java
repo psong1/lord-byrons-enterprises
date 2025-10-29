@@ -1,4 +1,4 @@
-package com.lordbyronsenterprises.server.model;
+package com.lordbyronsenterprises.server.support;
 
 import com.lordbyronsenterprises.server.product.Product;
 import com.lordbyronsenterprises.server.product.ProductVariant;

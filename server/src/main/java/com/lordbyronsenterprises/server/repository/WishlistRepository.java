@@ -1,6 +1,6 @@
 package com.lordbyronsenterprises.server.repository;
 
-import com.lordbyronsenterprises.server.model.Wishlist;
+import com.lordbyronsenterprises.server.support.Wishlist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

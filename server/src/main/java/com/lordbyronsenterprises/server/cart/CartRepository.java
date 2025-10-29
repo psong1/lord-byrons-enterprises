@@ -1,6 +1,5 @@
-package com.lordbyronsenterprises.server.repository;
+package com.lordbyronsenterprises.server.cart;
 
-import com.lordbyronsenterprises.server.cart.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.lordbyronsenterprises.server.model;
+package com.lordbyronsenterprises.server.inventory;
 
 import com.lordbyronsenterprises.server.product.ProductVariant;
 import jakarta.persistence.*;
@@ -21,7 +21,7 @@ public class StockMovement {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private StockMovementType type;
+    private InventoryItem.StockMovementType type;
 
     @NotNull
     private Integer quantity;

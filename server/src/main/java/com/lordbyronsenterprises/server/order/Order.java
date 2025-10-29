@@ -1,6 +1,5 @@
 package com.lordbyronsenterprises.server.order;
 
-import com.lordbyronsenterprises.server.model.AddressSnapshot;
 import com.lordbyronsenterprises.server.user.User;
 import lombok.Data;
 import jakarta.persistence.*;

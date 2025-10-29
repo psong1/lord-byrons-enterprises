@@ -1,6 +1,5 @@
-package com.lordbyronsenterprises.server.dto.user;
+package com.lordbyronsenterprises.server.user;
 
-import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data

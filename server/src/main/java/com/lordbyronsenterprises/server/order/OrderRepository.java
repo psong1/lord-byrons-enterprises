@@ -1,6 +1,5 @@
-package com.lordbyronsenterprises.server.repository;
+package com.lordbyronsenterprises.server.order;
 
-import com.lordbyronsenterprises.server.order.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

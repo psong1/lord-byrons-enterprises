@@ -1,6 +1,5 @@
 package com.lordbyronsenterprises.server.user;
 
-import com.lordbyronsenterprises.server.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
