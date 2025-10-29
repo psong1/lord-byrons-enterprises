@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 
@@ -39,5 +41,9 @@ public class Notification {
     @PrePersist
     protected void onCreate() {
         this.createdAt = Instant.now();
+    }
+
+    @Repository
+    public static interface WishlistRepository extends JpaRepository<Wishlist, Long> {
     }
 }

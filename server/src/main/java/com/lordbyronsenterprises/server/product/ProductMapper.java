@@ -1,6 +1,8 @@
 package com.lordbyronsenterprises.server.product;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 @Component
 public class ProductMapper {
@@ -25,5 +27,9 @@ public class ProductMapper {
         product.setCategory(category);
         product.setQuantity(dto.getQuantity());
         return product;
+    }
+
+    @Repository
+    public static interface ReviewRepository extends JpaRepository<Review, Long> {
     }
 }
