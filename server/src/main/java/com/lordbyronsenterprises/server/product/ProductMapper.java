@@ -1,14 +1,12 @@
 package com.lordbyronsenterprises.server.product;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 @Component
 public class ProductMapper {
 
-    public Product.ProductDto toDto(Product product) {
-        Product.ProductDto dto = new Product.ProductDto();
+    public ProductDto toDto(Product product) {
+        ProductDto dto = new ProductDto();
         dto.setId(product.getId());
         dto.setName(product.getName());
         dto.setDescription(product.getDescription());
@@ -18,18 +16,13 @@ public class ProductMapper {
         return dto;
     }
 
-    public Product toEntity(Product.ProductDto dto, Category category) {
+    public Product toEntity(ProductDto dto, Category category) {
         Product product = new Product();
-        product.setId(dto.getId());
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
         product.setCategory(category);
         product.setQuantity(dto.getQuantity());
         return product;
-    }
-
-    @Repository
-    public static interface ReviewRepository extends JpaRepository<Review, Long> {
     }
 }

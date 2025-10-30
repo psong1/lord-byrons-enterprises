@@ -47,35 +47,4 @@ public class Product {
     @EqualsAndHashCode.Exclude
     private Set<ProductTag> tags = new HashSet<>();
 
-    @Data
-    public static class ProductDto {
-        private Long id;
-
-        @NotBlank(message = "Product name is required")
-        private String name;
-
-        private String description;
-
-        @NotNull(message = "Category ID is required")
-        private Long categoryId;
-
-        @NotNull(message = "Price is required")
-        @Positive(message = "Price must be positive")
-        private Double price;
-
-        @NotNull(message = "Quantity is required")
-        @Min(value = 0, message = "Quantity cannot be negative")
-        private Integer quantity;
-    }
-
-    @Data
-    public static class CategoryDto {
-        private Long id;
-
-        @NotBlank(message = "Category name is required")
-        private String name;
-
-        private String description;
-
-    }
 }

@@ -43,12 +43,4 @@ public class InventoryItem {
     protected void onUpdate() {
         this.updatedAt = Instant.now();
     }
-
-    public enum StockMovementType {
-        IN,
-        OUT,
-        ADJUSTMENT,
-        RESERVATION,
-        RETURN
-    }
 }

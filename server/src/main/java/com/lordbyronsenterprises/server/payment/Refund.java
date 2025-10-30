@@ -41,7 +41,7 @@ public class Refund {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private ReturnStatus returnStatus;
+    private ReturnStatus status;
 
     @Column(nullable = false, updatable = false)
     private Instant createdAt;

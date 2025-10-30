@@ -1,6 +1,5 @@
 package com.lordbyronsenterprises.server.user;
 
-import com.lordbyronsenterprises.dto.user.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,10 +16,11 @@ public class UserMapper {
 
     public User toEntity(UserDto dto) {
         User user = new User();
-        user.setId(dto.getId());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
+        user.setUsername(dto.getUsername());
+        user.setRole(dto.getRole());
         return user;
     }
 }

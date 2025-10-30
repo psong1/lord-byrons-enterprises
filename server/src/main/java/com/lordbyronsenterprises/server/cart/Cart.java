@@ -4,10 +4,12 @@ import com.lordbyronsenterprises.server.user.User;
 import lombok.Data;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import java.util.Date;
+import java.time.Instant;
+import java.util.List;
+import java.util.ArrayList;
 
-@Entity
 @Data
+@Entity
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,15 +27,18 @@ public class Cart {
     private Double total;
 
     @PastOrPresent(message = "Creation date cannot be in the future")
-    private Date createdAt;
+    private Instant createdAt;
 
     @PastOrPresent(message = "Update date cannot be in the future")
-    private Date updatedAt;
+    private Instant updatedAt;
 
     @AssertTrue(message = "Cart must be associated with a user or have a session token")
     private boolean isUserOrSessionTokenPresent() {
         return user != null || (sessionToken != null && !sessionToken.isBlank());
     }
+
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> items = new ArrayList<>();
 
     public boolean isGuest() {
         return user == null && sessionToken == null;
@@ -45,10 +50,10 @@ public class Cart {
 
     @PrePersist
     private void onCreate() {
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
     @PreUpdate
-    private void onUpdate() { this.updatedAt = new Date(); }
+    private void onUpdate() { this.updatedAt = Instant.now(); }
 }
