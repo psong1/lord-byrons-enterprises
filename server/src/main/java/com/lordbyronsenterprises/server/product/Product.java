@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -24,7 +25,7 @@ public class Product {
 
     @NotNull
     @Positive(message = "Price must be positive")
-    private Double price;
+    private BigDecimal price;
 
     @NotNull
     @PositiveOrZero(message = "Quantity cannot be negative")

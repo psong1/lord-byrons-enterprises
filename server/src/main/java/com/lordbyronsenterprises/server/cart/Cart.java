@@ -3,7 +3,8 @@ package com.lordbyronsenterprises.server.cart;
 import com.lordbyronsenterprises.server.user.User;
 import lombok.Data;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.AssertTrue;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.ArrayList;
@@ -22,14 +23,19 @@ public class Cart {
     @Column(name = "session_token", unique = true, length = 128)
     private String sessionToken;
 
-    private Double subtotal;
-    private Double tax;
-    private Double total;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal subtotal;
 
-    @PastOrPresent(message = "Creation date cannot be in the future")
+    @Column(precision = 10, scale = 2)
+    private BigDecimal tax;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal total;
+
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> items = new ArrayList<>();
+
     private Instant createdAt;
-
-    @PastOrPresent(message = "Update date cannot be in the future")
     private Instant updatedAt;
 
     @AssertTrue(message = "Cart must be associated with a user or have a session token")
