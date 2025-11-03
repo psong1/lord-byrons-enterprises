@@ -4,7 +4,7 @@ import lombok.Data;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Data
 @Entity
@@ -32,19 +32,19 @@ public class ProductVariant {
     private Integer quantity;
 
     @PastOrPresent(message = "Creation date cannot be in the future")
-    private Date createdAt;
+    private Instant createdAt;
 
     @PastOrPresent(message = "Update date cannot be in the future")
-    private Date updatedAt;
+    private Instant updatedAt;
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedAt = new Date();
+        this.updatedAt = Instant.now();
     }
 }

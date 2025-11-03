@@ -21,7 +21,7 @@ public class StockMovement {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private InventoryItem.StockMovementType type;
+    private StockMovementType type;
 
     @NotNull
     private Integer quantity;

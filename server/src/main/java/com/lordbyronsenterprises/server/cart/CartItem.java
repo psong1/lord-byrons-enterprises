@@ -60,7 +60,7 @@ public class CartItem {
     }
 
     public void recalculateLineTotal() {
-        if (quantity == null || quantity <= 0) {
+        if (quantity != null && quantity > 0 && unitPrice != null) {
             this.lineTotal = unitPrice.multiply(new BigDecimal(quantity));
         } else {
             this.lineTotal = BigDecimal.ZERO;

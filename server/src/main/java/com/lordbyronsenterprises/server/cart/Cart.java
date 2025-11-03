@@ -43,9 +43,6 @@ public class Cart {
         return user != null || (sessionToken != null && !sessionToken.isBlank());
     }
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> items = new ArrayList<>();
-
     public boolean isGuest() {
         return user == null && sessionToken == null;
     }

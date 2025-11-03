@@ -5,7 +5,7 @@ import lombok.Data;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Data
 @Entity
@@ -32,19 +32,19 @@ public class Review {
     private String comment;
 
     @PastOrPresent(message = "Creation date cannot be in the future")
-    private Date createdAt;
+    private Instant createdAt;
 
     @PastOrPresent(message = "Update date cannot be in the future")
-    private Date updatedAt;
+    private Instant updatedAt;
 
     @PrePersist
     private void onCreate() {
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
     @PreUpdate
     private void onUpdate() {
-        this.updatedAt = new Date();
+        this.updatedAt = Instant.now();
     }
 }

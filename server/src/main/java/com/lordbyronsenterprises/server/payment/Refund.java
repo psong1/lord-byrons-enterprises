@@ -40,7 +40,6 @@ public class Refund {
     private String reason;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
     private ReturnStatus status;
 
     @Column(nullable = false, updatable = false)
