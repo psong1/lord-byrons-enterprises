@@ -1,6 +1,7 @@
 package com.lordbyronsenterprises.server.cart;
 
 import com.lordbyronsenterprises.server.product.Product;
+import com.lordbyronsenterprises.server.product.ProductVariant;
 import lombok.Data;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +13,7 @@ import java.time.Instant;
 @Data
 @Table(name = "cart items",
 uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"cart_id", "product_id"})
+        @UniqueConstraint(columnNames = {"cart_id", "product_variant_id"})
 })
 public class CartItem {
     @Id
@@ -26,6 +27,11 @@ public class CartItem {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "product_variant_id", nullable = false)
+    private ProductVariant variant;
 
     @NotNull
     @Positive(message = "Quantity must be positive")

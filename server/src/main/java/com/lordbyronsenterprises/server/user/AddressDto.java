@@ -1,20 +1,12 @@
 package com.lordbyronsenterprises.server.user;
 
-import lombok.Data;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 @Data
-@Entity
-public class Address {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AddressDto {
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @NotBlank(message = "Street address is required")
     private String line1;
@@ -22,10 +14,10 @@ public class Address {
     private String line2;
 
     @NotBlank(message = "City is required")
-    private String city = "Eleuthera";
+    private String city;
 
     @NotBlank(message = "Country is required")
-    private String country = "Bahamas";
+    private String country;
 
     @NotNull(message = "Address type is required")
     private AddressType type;

@@ -2,6 +2,8 @@ package com.lordbyronsenterprises.server.cart;
 
 import com.lordbyronsenterprises.server.product.Product;
 import com.lordbyronsenterprises.server.product.ProductRepository;
+import com.lordbyronsenterprises.server.product.ProductVariant;
+import com.lordbyronsenterprises.server.product.ProductVariantRepository;
 import com.lordbyronsenterprises.server.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class CartServiceImplementation implements CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
+    private final ProductVariantRepository variantRepository;
     private final CartMapper cartMapper;
 
     @Override
@@ -31,21 +34,23 @@ public class CartServiceImplementation implements CartService {
     public CartDto addItemToCart(User user, AddCartItemDto itemDto) {
         Cart cart = getOrCreateCart(user);
 
-        Product product = productRepository.findById(itemDto.getProductId())
+        ProductVariant variant = variantRepository.findById(itemDto.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
-        Optional<CartItem> existingItemOpt = cartItemRepository.findByCartAndProduct(cart, product);
+        Optional<CartItem> existingItemOpt = cartItemRepository.findByCartAndVariant(cart, variant);
 
         if (existingItemOpt.isPresent()) {
             CartItem item = existingItemOpt.get();
             item.setQuantity(item.getQuantity() + itemDto.getQuantity());
+            item.setUnitPrice(variant.getPrice());
             cartItemRepository.save(item);
         } else {
             CartItem newItem = new CartItem();
             newItem.setCart(cart);
-            newItem.setProduct(product);
+            newItem.setProduct(variant.getProduct());
+            newItem.setVariant(variant);
             newItem.setQuantity(itemDto.getQuantity());
-            newItem.setUnitPrice(product.getPrice());
+            newItem.setUnitPrice(variant.getPrice());
             cart.getItems().add(newItem);
         }
 
@@ -69,6 +74,7 @@ public class CartServiceImplementation implements CartService {
             return deleteItemFromCart(user, cartItemId);
         } else {
             item.setQuantity(quantity);
+            item.setUnitPrice(item.getVariant().getPrice());
             cartItemRepository.save(item);
         }
 
@@ -84,6 +90,10 @@ public class CartServiceImplementation implements CartService {
         CartItem item = cartItemRepository.findById(cartItemId).
                 orElseThrow(() -> new EntityNotFoundException("Cart item not found"));
 
+        if (!item.getCart().getId().equals(cart.getId())) {
+            throw new SecurityException("Cannot modify item in another user's cart");
+        }
+
         cart.getItems().remove(item);
 
         recalculateCart(cart);
@@ -95,6 +105,7 @@ public class CartServiceImplementation implements CartService {
     public void clearCart(User user) {
         Cart cart = getOrCreateCart(user);
         cart.getItems().clear();
+        recalculateCart(cart);
         cartRepository.save(cart);
     }
 
@@ -116,7 +127,8 @@ public class CartServiceImplementation implements CartService {
         }
         cart.setSubtotal(subtotal);
 
-        BigDecimal tax = subtotal.multiply(new BigDecimal("0.08"));
+        BigDecimal taxRate = new BigDecimal("0.08");
+        BigDecimal tax = subtotal.multiply(taxRate);
         cart.setTax(tax);
 
         cart.setTotal(subtotal.add(tax));
