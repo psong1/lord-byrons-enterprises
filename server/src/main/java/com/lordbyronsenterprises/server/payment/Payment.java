@@ -34,7 +34,6 @@ public class Payment {
     private String currency;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
     @Column(unique = true)

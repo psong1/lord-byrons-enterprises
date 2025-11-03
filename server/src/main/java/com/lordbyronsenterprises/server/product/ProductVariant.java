@@ -4,6 +4,7 @@ import lombok.Data;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Data
@@ -25,7 +26,8 @@ public class ProductVariant {
 
     @NotNull(message = "Price is required")
     @Positive(message = "Price cannot be negative")
-    private Double price;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal price;
 
     @NotNull(message = "Quantity is required")
     @Min(value = 0, message = "Quantity cannot be negative")

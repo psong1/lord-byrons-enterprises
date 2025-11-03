@@ -27,9 +27,9 @@ public class CartMapper {
             );
         }
 
-        dto.setSubtotal(convertToBigDecimal(cart.getSubtotal()));
-        dto.setTax(convertToBigDecimal(cart.getTax()));
-        dto.setTotal(convertToBigDecimal(cart.getTotal()));
+        dto.setSubtotal(cart.getSubtotal());
+        dto.setTax(cart.getTax());
+        dto.setTotal(cart.getTotal());
 
         return dto;
     }
@@ -49,17 +49,9 @@ public class CartMapper {
             dto.setProductName(product.getName());
         }
 
-        dto.setUnitPrice(convertToBigDecimal(item.getUnitPrice()));
-        dto.setLineTotal(convertToBigDecimal(item.getLineTotal()));
+        dto.setUnitPrice(item.getUnitPrice());
+        dto.setLineTotal(item.getLineTotal());
 
         return dto;
-    }
-
-    private BigDecimal convertToBigDecimal(Double value) {
-        if (value == null) {
-            return BigDecimal.ZERO;
-        }
-
-        return BigDecimal.valueOf(value).setScale(2, RoundingMode.HALF_UP);
     }
 }
