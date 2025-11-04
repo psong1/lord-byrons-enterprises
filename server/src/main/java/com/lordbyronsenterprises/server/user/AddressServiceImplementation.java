@@ -2,6 +2,7 @@ package com.lordbyronsenterprises.server.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.owasp.encoder.Encode;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,14 @@ public class AddressServiceImplementation implements AddressService {
     @Override
     public AddressDto createAddress(User user, AddressDto addressDto) {
         Address address = new Address();
-        addressMapper.toEntity(addressDto, address);
+        address.setLine1(Encode.forHtml(addressDto.getLine1()));
+        if (addressDto.getLine2() != null) {
+            address.setLine2(Encode.forHtml(addressDto.getLine2()));
+        }
+        address.setCity(Encode.forHtml(addressDto.getCity()));
+        address.setCountry(Encode.forHtml(addressDto.getCountry()));
+        address.setType(addressDto.getType());
+
         address.setUser(user);
         Address savedAddress = addressRepository.save(address);
         return addressMapper.toDto(savedAddress);
@@ -37,7 +45,15 @@ public class AddressServiceImplementation implements AddressService {
     @Override
     public AddressDto updateAddress(User user, Long addressId, AddressDto addressDto) {
         Address address = findAndVerifyAddress(user, addressId);
-        addressMapper.toEntity(addressDto, address);
+
+        address.setLine1(Encode.forHtml(addressDto.getLine1()));
+        if (addressDto.getLine2() != null) {
+            address.setLine2(Encode.forHtml(addressDto.getLine2()));
+        }
+        address.setCity(Encode.forHtml(addressDto.getCity()));
+        address.setCountry(Encode.forHtml(addressDto.getCountry()));
+        address.setType(addressDto.getType());
+
         Address updatedAddress = addressRepository.save(address);
         return addressMapper.toDto(updatedAddress);
     }

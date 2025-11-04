@@ -102,6 +102,11 @@ public class CartServiceImplementation implements CartService {
     }
 
     @Override
+    public Cart getCartEntityForUser(User user) {
+        return getOrCreateCart(user);
+    }
+
+    @Override
     public void clearCart(User user) {
         Cart cart = getOrCreateCart(user);
         cart.getItems().clear();

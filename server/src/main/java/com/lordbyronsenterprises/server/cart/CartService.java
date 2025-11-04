@@ -8,6 +8,8 @@ public interface CartService {
     CartDto updateItemQuantity(User user, Long cartItemId, int quantity);
     CartDto deleteItemFromCart(User user, Long cartItemId);
 
+    Cart getCartEntityForUser(User user);
+
     // Call by OrderService after an order is placed
     void clearCart(User user);
 }

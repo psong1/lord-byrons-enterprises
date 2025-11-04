@@ -1,10 +1,8 @@
 package com.lordbyronsenterprises.server.order;
 
-import com.lordbyronsenterprises.server.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long>{
-    Order findByUser(User user);
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 }

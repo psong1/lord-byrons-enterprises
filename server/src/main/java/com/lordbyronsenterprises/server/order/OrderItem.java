@@ -48,4 +48,12 @@ public class OrderItem {
 
     @NotNull
     private BigDecimal lineTotal;
+
+    public void recalculateTotals() {
+        if (quantity != null && quantity > 0 && unitPrice != null) {
+            this.lineTotal = unitPrice.multiply(new BigDecimal(quantity));
+        } else {
+            this.lineTotal = BigDecimal.ZERO;
+        }
+    }
 }
