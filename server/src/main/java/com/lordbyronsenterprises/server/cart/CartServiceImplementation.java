@@ -35,7 +35,7 @@ public class CartServiceImplementation implements CartService {
         Cart cart = getOrCreateCart(user);
 
         ProductVariant variant = variantRepository.findById(itemDto.getVariantId())
-                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Product variant not found"));
 
         Optional<CartItem> existingItemOpt = cartItemRepository.findByCartAndVariant(cart, variant);
 

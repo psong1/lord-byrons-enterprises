@@ -53,7 +53,7 @@ public class PaymentServiceImplementation implements PaymentService {
 
             PaymentIntent intent = PaymentIntent.create(params);
 
-            if ("succeeeded".equals(intent.getStatus())) {
+            if ("succeeded".equals(intent.getStatus())) {
                 payment.setStatus(PaymentStatus.SUCCEEDED);
                 payment.setTransactionId(intent.getId());
                 return paymentRepository.save(payment);

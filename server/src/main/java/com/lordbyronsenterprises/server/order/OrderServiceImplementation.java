@@ -76,7 +76,7 @@ public class OrderServiceImplementation implements OrderService {
         try {
             paymentService.charge(savedOrder, orderRequest.getPaymentMethodId());
             savedOrder.setStatus(OrderStatus.PAID);
-        } catch (PaymentException | StripeException e) {
+        } catch (PaymentException e) {
             for (CartItem item : cart.getItems()) {
                 inventoryService.releaseStock(item.getVariant(), item.getQuantity());
             }

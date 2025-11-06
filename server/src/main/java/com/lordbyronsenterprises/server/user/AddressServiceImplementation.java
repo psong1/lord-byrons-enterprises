@@ -29,15 +29,10 @@ public class AddressServiceImplementation implements AddressService {
     @Override
     public AddressDto createAddress(User user, AddressDto addressDto) {
         Address address = new Address();
-        address.setLine1(Encode.forHtml(addressDto.getLine1()));
-        if (addressDto.getLine2() != null) {
-            address.setLine2(Encode.forHtml(addressDto.getLine2()));
-        }
-        address.setCity(Encode.forHtml(addressDto.getCity()));
-        address.setCountry(Encode.forHtml(addressDto.getCountry()));
-        address.setType(addressDto.getType());
 
-        address.setUser(user);
+        addressMapper.toEntity(addressDto, address);
+
+        address.setUser(user); // Links to the authenticated user
         Address savedAddress = addressRepository.save(address);
         return addressMapper.toDto(savedAddress);
     }
@@ -46,13 +41,7 @@ public class AddressServiceImplementation implements AddressService {
     public AddressDto updateAddress(User user, Long addressId, AddressDto addressDto) {
         Address address = findAndVerifyAddress(user, addressId);
 
-        address.setLine1(Encode.forHtml(addressDto.getLine1()));
-        if (addressDto.getLine2() != null) {
-            address.setLine2(Encode.forHtml(addressDto.getLine2()));
-        }
-        address.setCity(Encode.forHtml(addressDto.getCity()));
-        address.setCountry(Encode.forHtml(addressDto.getCountry()));
-        address.setType(addressDto.getType());
+        addressMapper.toEntity(addressDto, address);
 
         Address updatedAddress = addressRepository.save(address);
         return addressMapper.toDto(updatedAddress);
