@@ -4,9 +4,12 @@ import com.lordbyronsenterprises.server.cart.Cart;
 import com.lordbyronsenterprises.server.cart.CartItem;
 import com.lordbyronsenterprises.server.cart.CartService;
 import com.lordbyronsenterprises.server.inventory.InventoryService;
+import com.lordbyronsenterprises.server.payment.PaymentService;
+import com.lordbyronsenterprises.server.payment.PaymentException;
 import com.lordbyronsenterprises.server.user.Address;
 import com.lordbyronsenterprises.server.user.AddressRepository;
 import com.lordbyronsenterprises.server.user.User;
+import com.stripe.exception.StripeException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -22,11 +25,11 @@ import java.util.stream.Collectors;
 public class OrderServiceImplementation implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
     private final CartService cartService;
     private final InventoryService inventoryService;
     private final AddressRepository addressRepository;
     private final OrderMapper orderMapper;
+    private final PaymentService paymentService;
 
     @Override
     public OrderDto createOrder(User user, CreateOrderRequestDto orderRequest) {
@@ -54,6 +57,8 @@ public class OrderServiceImplementation implements OrderService {
         order.setShippingAddress(createSnapshot(shippingAddress));
         order.setBillingAddress(createSnapshot(billingAddress));
 
+        Order savedOrder = orderRepository.save(order);
+
         for (CartItem item : cart.getItems()) {
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
@@ -67,8 +72,17 @@ public class OrderServiceImplementation implements OrderService {
             order.getItems().add(orderItem);
         }
 
-        // TO DO: Implement payment processing
-        order.setStatus(OrderStatus.PAID);
+        // Payment Processing
+        try {
+            paymentService.charge(savedOrder, orderRequest.getPaymentMethodId());
+            savedOrder.setStatus(OrderStatus.PAID);
+        } catch (PaymentException | StripeException e) {
+            for (CartItem item : cart.getItems()) {
+                inventoryService.releaseStock(item.getVariant(), item.getQuantity());
+            }
+
+            throw new IllegalStateException("Payment failed: " + e.getMessage());
+        }
 
         for (CartItem item : cart.getItems()) {
             inventoryService.commitStock(item.getVariant(), item.getQuantity());
@@ -76,8 +90,8 @@ public class OrderServiceImplementation implements OrderService {
 
         cartService.clearCart(user);
 
-        Order savedOrder = orderRepository.save(order);
-        return orderMapper.toOrderDto(savedOrder);
+        Order finalOrder = orderRepository.save(savedOrder);
+        return orderMapper.toOrderDto(finalOrder);
     }
 
     @Override
