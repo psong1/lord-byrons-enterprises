@@ -60,6 +60,13 @@ public class InventoryServiceImplementation implements InventoryService {
         createStockMovement(variant, -quantity, StockMovementType.RESERVATION, "Order failed/cancelled");
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public int getAvailableStock(ProductVariant variant) {
+        InventoryItem item = getInventoryItem(variant);
+        return item.getAvailable();
+    }
+
     private InventoryItem getInventoryItem(ProductVariant variant) {
         return inventoryItemRepository.findByProductVariantId(variant.getId())
                 .orElseGet(() -> {

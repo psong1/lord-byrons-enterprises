@@ -1,6 +1,8 @@
 package com.lordbyronsenterprises.server.cart;
 
 import com.lordbyronsenterprises.server.product.Product;
+import com.lordbyronsenterprises.server.inventory.InventoryService;
+import com.lordbyronsenterprises.server.inventory.OutOfStockException;
 import com.lordbyronsenterprises.server.product.ProductRepository;
 import com.lordbyronsenterprises.server.product.ProductVariant;
 import com.lordbyronsenterprises.server.product.ProductVariantRepository;
@@ -23,6 +25,7 @@ public class CartServiceImplementation implements CartService {
     private final ProductRepository productRepository;
     private final ProductVariantRepository variantRepository;
     private final CartMapper cartMapper;
+    private final InventoryService inventoryService;
 
     @Override
     public CartDto getCartForUser(User user) {
@@ -38,6 +41,18 @@ public class CartServiceImplementation implements CartService {
                 .orElseThrow(() -> new EntityNotFoundException("Product variant not found"));
 
         Optional<CartItem> existingItemOpt = cartItemRepository.findByCartAndVariant(cart, variant);
+
+        int quantityAlreadyInCart = existingItemOpt.map(CartItem::getQuantity).orElse(0);
+        int requestedTotalQuantity = quantityAlreadyInCart + itemDto.getQuantity();
+        int availableStock = inventoryService.getAvailableStock(variant);
+
+        if (requestedTotalQuantity > availableStock) {
+            throw new OutOfStockException(
+                    "Cannot add " + itemDto.getQuantity() + " item(s). Only " +
+                            availableStock + " are available and you already have " +
+                            quantityAlreadyInCart + " in your cart."
+            );
+        }
 
         if (existingItemOpt.isPresent()) {
             CartItem item = existingItemOpt.get();

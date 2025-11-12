@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    List<User> getAllUsers();
-    Optional<User> getUserById(Long id);
-    User createUser(User user);
-    User updateUser(User user);
-    void deleteUser(Long id);
+    List<UserDto> getAllUsers();
+    Optional<UserDto> getUserById(Long id);
+    Optional<User> getUserByUsername(String username);
+    Optional<User> getUserByEmail(String email);
+    UserDto createUser(CreateUserDto userDto);
+    UserDto updateUser(String username, UpdateUserDto userDto);
+    void updatePassword(String username, UpdatePasswordDto dto);
+    void deleteUserById(Long id);
 
-    User updateUserRole(Long userId, Role newRole);
 }

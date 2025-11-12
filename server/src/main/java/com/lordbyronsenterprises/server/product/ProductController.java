@@ -3,6 +3,7 @@ package com.lordbyronsenterprises.server.product;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductDto> create(@RequestBody ProductDto productDto) {
         try {
             ProductDto savedProduct = productService.createProduct(productDto);
@@ -40,6 +42,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductDto> update(@PathVariable Long id, @RequestBody ProductDto productDto) {
         try {
             ProductDto updatedProduct = productService.updateProduct(id, productDto);
@@ -50,6 +53,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             productService.deleteProduct(id);

@@ -6,10 +6,5 @@ public interface InventoryService {
     void reserveStock(ProductVariant variant, int quantity);
     void commitStock(ProductVariant variant, int quantity);
     void releaseStock(ProductVariant variant, int quantity);
-}
-
-class OutOfStockException extends RuntimeException {
-    public OutOfStockException(String message) {
-        super(message);
-    }
+    int getAvailableStock(ProductVariant variant);
 }

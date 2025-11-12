@@ -1,11 +1,15 @@
 package com.lordbyronsenterprises.server.cart;
 
+import com.lordbyronsenterprises.server.inventory.OutOfStockException;
 import com.lordbyronsenterprises.server.user.User;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/cart")
@@ -22,9 +26,15 @@ public class CartController {
     }
 
     @PostMapping("/items")
-    public ResponseEntity<CartDto> addItemToCart(@AuthenticationPrincipal User user, @Valid @RequestBody AddCartItemDto addItemDto) {
-        CartDto updatedCart = cartService.addItemToCart(user, addItemDto);
-        return ResponseEntity.ok(updatedCart);
+    public ResponseEntity<?> addItemToCart(@AuthenticationPrincipal User user, @Valid @RequestBody AddCartItemDto addItemDto) {
+        try {
+            CartDto updatedCart = cartService.addItemToCart(user, addItemDto);
+            return ResponseEntity.ok(updatedCart);
+        } catch (OutOfStockException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PutMapping("/items/{cartItemId}")

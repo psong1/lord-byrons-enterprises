@@ -2,6 +2,7 @@ package com.lordbyronsenterprises.server.product;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class CategoryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoryDto> create(@RequestBody CategoryDto dto) {
         try {
             Category category = categoryMapper.toEntity(dto);
@@ -45,6 +47,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoryDto> update(@PathVariable Long id, @RequestBody CategoryDto dto) {
         try {
             Category category = categoryService.updateCategory(id, categoryMapper.toEntity(dto));
@@ -55,6 +58,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             categoryService.deleteCategory(id);
