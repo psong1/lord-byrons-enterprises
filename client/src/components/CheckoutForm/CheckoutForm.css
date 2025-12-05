@@ -1,0 +1,60 @@
+.checkout-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  color: #333;
+}
+
+.checkout-title {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.checkout-form h3,
+.checkout-form p {
+  color: #333;
+}
+
+.stripe-card-element {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  margin-bottom: 20px;
+}
+
+.checkout-error {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.pay-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #6772e5; /* Stripe purple */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pay-button:hover {
+  background-color: #5469d4;
+}
+
+.pay-button:disabled {
+  background-color: #a0a5e8;
+  cursor: not-allowed;
+}

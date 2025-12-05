@@ -1,23 +1,24 @@
 package com.lordbyronsenterprises.server.order;
 
-import com.lordbyronsenterprises.server.cart.Cart;
-import com.lordbyronsenterprises.server.cart.CartItem;
-import com.lordbyronsenterprises.server.cart.CartService;
-import com.lordbyronsenterprises.server.inventory.InventoryService;
-import com.lordbyronsenterprises.server.payment.PaymentService;
-import com.lordbyronsenterprises.server.payment.PaymentException;
-import com.lordbyronsenterprises.server.user.Address;
-import com.lordbyronsenterprises.server.user.AddressRepository;
-import com.lordbyronsenterprises.server.user.User;
-import com.stripe.exception.StripeException;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.lordbyronsenterprises.server.cart.Cart;
+import com.lordbyronsenterprises.server.cart.CartItem;
+import com.lordbyronsenterprises.server.cart.CartService;
+import com.lordbyronsenterprises.server.inventory.InventoryService;
+import com.lordbyronsenterprises.server.payment.PaymentException;
+import com.lordbyronsenterprises.server.payment.PaymentService;
+import com.lordbyronsenterprises.server.user.Address;
+import com.lordbyronsenterprises.server.user.AddressRepository;
+import com.lordbyronsenterprises.server.user.User;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -124,6 +125,25 @@ public class OrderServiceImplementation implements OrderService {
             throw new AccessDeniedException("Address does not belong to the current user");
         }
         return address;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderDto> getAllOrders() {
+        return orderRepository.findAll().stream()
+                .map(orderMapper::toOrderDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public OrderDto updateOrderStatus(Long orderId, OrderStatus status) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + orderId));
+        
+        order.setStatus(status);
+        Order updatedOrder = orderRepository.save(order);
+        return orderMapper.toOrderDto(updatedOrder);
     }
 
     private AddressSnapshot createSnapshot(Address address) {

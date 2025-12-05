@@ -1,15 +1,16 @@
 package com.lordbyronsenterprises.server.user;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.stereotype.Service;
-import org.owasp.encoder.Encode;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.owasp.encoder.Encode;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -45,11 +46,12 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDto createUser(CreateUserDto dto) {
-        User user = userMapper.toEntity(dto);
+        // Create user entity manually to ensure correct field mapping
+        User user = new User();
         user.setFirstName(Encode.forHtml(dto.getFirstName()));
         user.setLastName(Encode.forHtml(dto.getLastName()));
-        user.setUsername(Encode.forHtml(dto.getUsername()));
-        user.setEmail(dto.getEmail());
+        user.setUsername(Encode.forHtml(dto.getUsername())); // Explicitly set username from DTO
+        user.setEmail(dto.getEmail()); // Explicitly set email from DTO
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setRole(dto.getRole() != null ? dto.getRole() : Role.CUSTOMER);
 
@@ -61,6 +63,11 @@ public class UserServiceImplementation implements UserService {
     public UserDto updateUser(String username, UpdateUserDto dto) {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with username: " + username));
+        
+        if (dto.getRole() != null) {
+            throw new IllegalArgumentException("Role cannot be updated through this endpoint. Use the dedicated role update endpoint.");
+        }
+        
         user.setFirstName(Encode.forHtml(dto.getFirstName()));
         user.setLastName(Encode.forHtml(dto.getLastName()));
         user.setEmail(dto.getEmail());
@@ -68,6 +75,15 @@ public class UserServiceImplementation implements UserService {
             user.setUsername(Encode.forHtml(dto.getUsername()));
         }
 
+        User updatedUser = userRepository.save(user);
+        return userMapper.toDto(updatedUser);
+    }
+
+    @Override
+    public UserDto updateUserRole(Long id, Role role) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+        user.setRole(role);
         User updatedUser = userRepository.save(user);
         return userMapper.toDto(updatedUser);
     }

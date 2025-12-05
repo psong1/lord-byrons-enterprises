@@ -10,6 +10,7 @@ public interface UserService {
     Optional<User> getUserByEmail(String email);
     UserDto createUser(CreateUserDto userDto);
     UserDto updateUser(String username, UpdateUserDto userDto);
+    UserDto updateUserRole(Long id, Role role);
     void updatePassword(String username, UpdatePasswordDto dto);
     void deleteUserById(Long id);
 

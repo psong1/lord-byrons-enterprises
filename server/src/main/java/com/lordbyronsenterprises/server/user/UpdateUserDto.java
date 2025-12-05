@@ -1,7 +1,8 @@
 package com.lordbyronsenterprises.server.user;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import jakarta.validation.constraints.*;
 
 @Data
 public class UpdateUserDto {
@@ -14,4 +15,5 @@ public class UpdateUserDto {
     @Email(message = "Invalid email")
     private String email;
 
+    private Role role;
 }

@@ -1,0 +1,8 @@
+.register-btn {
+  background-color: #28a745; /* Green for register */
+}
+
+.register-btn:hover {
+  background-color: #218838;
+}
+/* Include other styles from LoginPage.css if not sharing a common file */

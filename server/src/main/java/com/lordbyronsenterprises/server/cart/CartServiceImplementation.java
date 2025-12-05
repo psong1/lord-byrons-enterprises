@@ -1,19 +1,25 @@
 package com.lordbyronsenterprises.server.cart;
 
-import com.lordbyronsenterprises.server.product.Product;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.lordbyronsenterprises.server.inventory.InventoryItem;
+import com.lordbyronsenterprises.server.inventory.InventoryItemRepository;
 import com.lordbyronsenterprises.server.inventory.InventoryService;
 import com.lordbyronsenterprises.server.inventory.OutOfStockException;
+import com.lordbyronsenterprises.server.product.Product;
 import com.lordbyronsenterprises.server.product.ProductRepository;
 import com.lordbyronsenterprises.server.product.ProductVariant;
 import com.lordbyronsenterprises.server.product.ProductVariantRepository;
 import com.lordbyronsenterprises.server.user.User;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +32,7 @@ public class CartServiceImplementation implements CartService {
     private final ProductVariantRepository variantRepository;
     private final CartMapper cartMapper;
     private final InventoryService inventoryService;
+    private final InventoryItemRepository inventoryItemRepository;
 
     @Override
     public CartDto getCartForUser(User user) {
@@ -35,10 +42,40 @@ public class CartServiceImplementation implements CartService {
 
     @Override
     public CartDto addItemToCart(User user, AddCartItemDto itemDto) {
+        if (user == null) {
+            throw new IllegalArgumentException("User must be authenticated to add items to cart");
+        }
         Cart cart = getOrCreateCart(user);
 
-        ProductVariant variant = variantRepository.findById(itemDto.getVariantId())
-                .orElseThrow(() -> new EntityNotFoundException("Product variant not found"));
+        ProductVariant variant;
+        
+        // If variantId is provided, use it
+        if (itemDto.getVariantId() != null) {
+            variant = variantRepository.findById(itemDto.getVariantId())
+                    .orElseThrow(() -> new EntityNotFoundException("Product variant not found"));
+            
+            // If productId was also provided, verify it matches the variant's product
+            if (itemDto.getProductId() != null && !variant.getProduct().getId().equals(itemDto.getProductId())) {
+                throw new IllegalArgumentException("Product ID does not match the variant's product");
+            }
+        } else if (itemDto.getProductId() != null) {
+            // If no variantId but productId is provided, get or create a default variant
+            Product product = productRepository.findById(itemDto.getProductId())
+                    .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+            
+            // Check if product has any variants
+            List<ProductVariant> existingVariants = variantRepository.findByProductId(product.getId());
+            
+            if (existingVariants.isEmpty()) {
+                // Create a default variant for this product
+                variant = createDefaultVariant(product);
+            } else {
+                // Use the first available variant
+                variant = existingVariants.get(0);
+            }
+        } else {
+            throw new IllegalArgumentException("Either variantId or productId must be provided");
+        }
 
         Optional<CartItem> existingItemOpt = cartItemRepository.findByCartAndVariant(cart, variant);
 
@@ -70,6 +107,12 @@ public class CartServiceImplementation implements CartService {
         }
 
         recalculateCart(cart);
+        
+        // Ensure user is still set before saving (validation requirement)
+        if (cart.getUser() == null) {
+            cart.setUser(user);
+        }
+        
         Cart savedCart = cartRepository.save(cart);
         return cartMapper.toDto(savedCart);
     }
@@ -94,6 +137,12 @@ public class CartServiceImplementation implements CartService {
         }
 
         recalculateCart(cart);
+        
+        // Ensure user is still set before saving (validation requirement)
+        if (cart.getUser() == null) {
+            cart.setUser(user);
+        }
+        
         Cart savedCart = cartRepository.save(cart);
         return cartMapper.toDto(savedCart);
     }
@@ -112,6 +161,12 @@ public class CartServiceImplementation implements CartService {
         cart.getItems().remove(item);
 
         recalculateCart(cart);
+        
+        // Ensure user is still set before saving (validation requirement)
+        if (cart.getUser() == null) {
+            cart.setUser(user);
+        }
+        
         Cart savedCart = cartRepository.save(cart);
         return cartMapper.toDto(savedCart);
     }
@@ -126,16 +181,53 @@ public class CartServiceImplementation implements CartService {
         Cart cart = getOrCreateCart(user);
         cart.getItems().clear();
         recalculateCart(cart);
+        
+        // Ensure user is still set before saving (validation requirement)
+        if (cart.getUser() == null) {
+            cart.setUser(user);
+        }
+        
         cartRepository.save(cart);
     }
 
     private Cart getOrCreateCart(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null when creating or retrieving cart");
+        }
         return cartRepository.findByUser(user)
                 .orElseGet(() -> {
                     Cart newCart = new Cart();
                     newCart.setUser(user);
+                    // Ensure user is set before validation
+                    if (newCart.getUser() == null) {
+                        throw new IllegalStateException("Failed to set user on cart");
+                    }
                     return cartRepository.save(newCart);
                 });
+    }
+
+    private ProductVariant createDefaultVariant(Product product) {
+        ProductVariant variant = new ProductVariant();
+        variant.setProduct(product);
+        variant.setSku("DEFAULT-" + product.getId());
+        variant.setTitle(product.getName() + " - Default");
+        variant.setPrice(product.getPrice());
+        Integer productQuantity = product.getQuantity();
+        variant.setQuantity(productQuantity != null ? productQuantity : 0);
+        variant.setCreatedAt(Instant.now());
+        variant.setUpdatedAt(Instant.now());
+        
+        ProductVariant savedVariant = variantRepository.save(variant);
+        
+        // Create inventory item for the variant
+        InventoryItem inventoryItem = new InventoryItem();
+        inventoryItem.setProductVariant(savedVariant);
+        inventoryItem.setOnHand(variant.getQuantity());
+        inventoryItem.setReserved(0);
+        inventoryItem.setUpdatedAt(Instant.now());
+        inventoryItemRepository.save(inventoryItem);
+        
+        return savedVariant;
     }
 
     private void recalculateCart(Cart cart) {
