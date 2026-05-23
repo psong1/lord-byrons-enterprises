@@ -274,22 +274,6 @@ Tests include cart, order, and inventory service/controller slices. See `server/
 
 ---
 
-## Further documentation
-
-These guides go deeper for learning and maintenance:
-
-| Document                                                                                   | Contents                                     |
-| ------------------------------------------------------------------------------------------ | -------------------------------------------- |
-| [client/README.md](client/README.md)                                                       | Frontend file-by-file guide                  |
-| [server/README.md](server/README.md)                                                       | Backend architecture and Java file reference |
-| [PAYMENT_SYSTEM_README.md](PAYMENT_SYSTEM_README.md)                                       | Stripe checkout flow                         |
-| [USER_CONTROLLER_EXPLANATION.md](USER_CONTROLLER_EXPLANATION.md)                           | Users, login, roles                          |
-| [EMPLOYEE_FEATURES_FILES.md](EMPLOYEE_FEATURES_FILES.md)                                   | Portal and payroll features                  |
-| [INVENTORY_EMPLOYEE_MANAGEMENT_ASSESSMENT.md](INVENTORY_EMPLOYEE_MANAGEMENT_ASSESSMENT.md) | Inventory gaps and roadmap                   |
-| [HOW_TO_RUN_SQL_SCRIPT.md](HOW_TO_RUN_SQL_SCRIPT.md)                                       | Sample data for MySQL                        |
-
----
-
 ## Troubleshooting
 
 | Problem                     | What to check                                                                            |
