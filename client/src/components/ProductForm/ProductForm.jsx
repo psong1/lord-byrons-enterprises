@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../Navbar";
 import AdminNavbar from "../AdminNavbar";
 import * as productService from "../../api/productService";
@@ -7,6 +7,9 @@ import "./ProductForm.css";
 
 const ProductForm = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const isEditMode = !!id;
+  const [loading, setLoading] = useState(isEditMode);
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
@@ -19,16 +22,17 @@ const ProductForm = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const data = await productService.getAllCategories();
+        const data = await productService.getAllCategories;
         setCategories(data);
-        if (data.length > 0)
+        if (data.length > 0 && !isEditMode) {
           setFormData((prev) => ({ ...prev, categoryId: data[0].id }));
+        }
       } catch (error) {
         console.error("Failed to load categories", error);
       }
     };
     fetchCategories();
-  }, []);
+  }, [isEditMode]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

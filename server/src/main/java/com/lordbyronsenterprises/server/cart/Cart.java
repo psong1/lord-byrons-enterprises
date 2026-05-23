@@ -43,14 +43,6 @@ public class Cart {
         return user != null || (sessionToken != null && !sessionToken.isBlank());
     }
 
-    public boolean isGuest() {
-        return user == null && sessionToken == null;
-    }
-
-    public boolean isAuthenticatedCart() {
-        return user != null;
-    }
-
     @PrePersist
     private void onCreate() {
         this.createdAt = Instant.now();

@@ -6,11 +6,12 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const { isAuthenticated, logout, user } = useAuth();
-  const { cartItemCount } = useCart();
+  const { cartItemCount, refreshCart } = useCart();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
+    refreshCart();
     navigate("/login");
   };
 
@@ -31,34 +32,40 @@ const Navbar = () => {
           </Link>
         </li>
 
+        <li>
+          <Link to="/cart" className="navbar-link">
+            Cart{" "}
+            {cartItemCount > 0 && (
+              <span className="cart-badge">{cartItemCount}</span>
+            )}
+          </Link>
+        </li>
+
         {isAuthenticated ? (
           <>
-            <li>
-              <Link to="/cart" className="navbar-link">
-                Cart{" "}
-                {cartItemCount > 0 && (
-                  <span className="cart-badge">{cartItemCount}</span>
-                )}
-              </Link>
-            </li>
             <li>
               <Link to="/account" className="navbar-link">
                 Account
               </Link>
             </li>
-            {user?.role === "ADMIN" && (
-              <li>
-                <Link to="/admin" className="navbar-link">
-                  Admin Dashboard
-                </Link>
-              </li>
-            )}
             {(user?.role === "EMPLOYEE" || user?.role === "ADMIN") && (
-              <li>
-                <Link to="/employee/fulfillment" className="navbar-link">
-                  Order Fulfillment
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link to="/portal/dashboard" className="navbar-link">
+                    Portal
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/portal/fulfillment" className="navbar-link">
+                    Order Fulfillment
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/portal/payroll" className="navbar-link">
+                    Payroll
+                  </Link>
+                </li>
+              </>
             )}
             <li>
               <button onClick={handleLogout} className="navbar-button">

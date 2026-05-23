@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { addItemToCart } from "../../api/cartService";
 import { useCart } from "../../context/CartContext";
 import * as productService from "../../api/productService";
 import "./ProductCard.css";
 
 const ProductCard = ({ product }) => {
   const [adding, setAdding] = useState(false);
-  const { refreshCart } = useCart();
+  const { addToCart } = useCart();
 
   const handleQuickAdd = async () => {
     try {
@@ -17,8 +16,7 @@ const ProductCard = ({ product }) => {
 
       if (!variants || variants.length === 0) {
         // If no variants exist, send productId and let backend create a default variant
-        await addItemToCart(null, 1, product.id);
-        refreshCart();
+        await addToCart(null, 1, product.id);
         alert("Added to cart!");
         return;
       }
@@ -27,8 +25,7 @@ const ProductCard = ({ product }) => {
       const firstVariant = variants[0];
       // Always send productId - use variant's productId if available, otherwise use product.id
       const productIdToSend = firstVariant.productId || product.id;
-      await addItemToCart(firstVariant.id, 1, productIdToSend);
-      refreshCart();
+      await addToCart(firstVariant.id, 1, productIdToSend);
       alert("Added to cart!");
     } catch (error) {
       console.error("Error adding to cart", error);

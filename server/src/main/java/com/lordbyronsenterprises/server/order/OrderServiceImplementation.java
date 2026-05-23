@@ -89,7 +89,7 @@ public class OrderServiceImplementation implements OrderService {
             inventoryService.commitStock(item.getVariant(), item.getQuantity());
         }
 
-        cartService.clearCart(user);
+        cartService.clearCart(user, null);
 
         Order finalOrder = orderRepository.save(savedOrder);
         return orderMapper.toOrderDto(finalOrder);

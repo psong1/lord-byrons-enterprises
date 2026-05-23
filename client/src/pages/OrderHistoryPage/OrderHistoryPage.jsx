@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import * as orderService from "../../api/orderService";
-import Navbar from "../../components/Navbar";
 import { Link } from "react-router-dom";
 import "./OrderHistoryPage.css";
 
@@ -20,9 +19,7 @@ const OrderHistoryPage = () => {
   }, []);
 
   return (
-    <div>
-      <Navbar />
-      <div className="order-history-container">
+    <div className="order-history-container">
         <h1>Order History</h1>
         <table className="orders-table">
           <thead>
@@ -50,7 +47,6 @@ const OrderHistoryPage = () => {
             ))}
           </tbody>
         </table>
-      </div>
     </div>
   );
 };

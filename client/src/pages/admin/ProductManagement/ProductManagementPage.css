@@ -60,3 +60,21 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-edit {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.btn-edit:hover {
+  background-color: #0056b3;
+}

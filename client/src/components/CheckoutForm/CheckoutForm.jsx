@@ -6,16 +6,14 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import axios from "axios";
+import api from "../../api/axiosConfig";
 import "./CheckoutForm.css";
 
-const stripePromise = loadStripe("");
+const stripePromise = loadStripe(
+  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "",
+);
 
-const CheckoutFormContent = ({
-  shippingAddressId,
-  billingAddressId,
-  userToken,
-}) => {
+const CheckoutFormContent = ({ shippingAddressId, billingAddressId }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState(null);
@@ -31,6 +29,7 @@ const CheckoutFormContent = ({
     }
 
     const cardElement = elements.getElement(CardElement);
+
     const { error: stripeError, paymentMethod } =
       await stripe.createPaymentMethod({
         type: "card",
@@ -46,23 +45,20 @@ const CheckoutFormContent = ({
     const orderPayload = {
       shippingAddressId,
       billingAddressId,
-      userToken,
+      paymentMethodId: paymentMethod.id,
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/orders",
-        orderPayload,
-        {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await api.post("/orders", orderPayload);
+      console.log("Order successful!", response.data);
     } catch (error) {
       console.error(`Order failed: ${error}`);
-      setError(error.response?.data || "Order failed. Please try again.");
+      const errorMessage =
+        error.response?.data?.message ||
+        typeof error.response?.data === "string"
+          ? error.response.data
+          : "Order failed. Please try again.";
+      setError(errorMessage);
     }
 
     setProcessing(false);

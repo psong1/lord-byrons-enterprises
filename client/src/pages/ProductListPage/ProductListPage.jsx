@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as productService from "../../api/productService";
 import ProductCard from "../../components/ProductCard";
-import Navbar from "../../components/Navbar";
 import "./ProductListPage.css";
 
 const ProductListPage = () => {
@@ -23,9 +22,7 @@ const ProductListPage = () => {
   }, []);
 
   return (
-    <div>
-      <Navbar />
-      <div className="product-list-container">
+    <div className="product-list-container">
         <h2>Products</h2>
         {loading ? (
           <div>Loading products...</div>
@@ -36,7 +33,6 @@ const ProductListPage = () => {
             ))}
           </div>
         )}
-      </div>
     </div>
   );
 };

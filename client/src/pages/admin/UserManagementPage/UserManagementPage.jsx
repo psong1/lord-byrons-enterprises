@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../../../components/Navbar";
-import AdminNavbar from "../../../components/AdminNavbar";
 import * as userService from "../../../api/userService";
 import "./UserManagementPage.css";
 
@@ -41,64 +39,56 @@ const UserManagementPage = () => {
 
   if (loading) {
     return (
-      <div>
-        <Navbar />
-        <AdminNavbar />
-        <div className="admin-dashboard">
-          <h2>User Management</h2>
-          <p>Loading users...</p>
-        </div>
+      <div className="admin-dashboard">
+        <h2>User Management</h2>
+        <p>Loading users...</p>
       </div>
     );
   }
 
   return (
-    <div>
-      <Navbar />
-      <AdminNavbar />
-      <div className="admin-dashboard">
-        <h2>User Management</h2>
-        <table className="user-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Actions</th>
+    <div className="admin-dashboard">
+      <h2>User Management</h2>
+      <table className="user-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.username}</td>
+              <td>{user.email}</td>
+              <td>
+                <span className={`role-badge role-${user.role}`}>
+                  {user.role}
+                </span>
+              </td>
+              <td>
+                <select
+                  value={user.role}
+                  onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                  disabled={updating[user.id]}
+                  className="role-select"
+                >
+                  <option value="CUSTOMER">CUSTOMER</option>
+                  <option value="EMPLOYEE">EMPLOYEE</option>
+                  <option value="ADMIN">ADMIN</option>
+                </select>
+                {updating[user.id] && (
+                  <span className="updating-text">Updating...</span>
+                )}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>
-                  <span className={`role-badge role-${user.role}`}>
-                    {user.role}
-                  </span>
-                </td>
-                <td>
-                  <select
-                    value={user.role}
-                    onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                    disabled={updating[user.id]}
-                    className="role-select"
-                  >
-                    <option value="CUSTOMER">CUSTOMER</option>
-                    <option value="EMPLOYEE">EMPLOYEE</option>
-                    <option value="ADMIN">ADMIN</option>
-                  </select>
-                  {updating[user.id] && (
-                    <span className="updating-text">Updating...</span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

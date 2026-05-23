@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../../components/Navbar";
-import AdminNavbar from "../../../components/AdminNavbar";
 import * as productService from "../../../api/productService";
 import "./ProductManagementPage.css";
 
@@ -37,20 +35,16 @@ const ProductManagementPage = () => {
     }
   };
 
-  if (loading)
+  if (loading) {
     return (
-      <div>
-        <Navbar />
-        <AdminNavbar />
-        <div className="product-management">Loading products...</div>
+      <div className="product-management">
+        <p>Loading products...</p>
       </div>
     );
+  }
 
   return (
-    <div>
-      <Navbar />
-      <AdminNavbar />
-      <div className="product-management">
+    <div className="product-management">
         <div className="pm-header">
           <h2>Product Management</h2>
           <Link to="/admin/products/new" className="btn-add">
@@ -76,6 +70,14 @@ const ProductManagementPage = () => {
                 <td>${product.price.toFixed(2)}</td>
                 <td>{product.quantity}</td>
                 <td>
+                  <div className="action-buttons">
+                    <Link
+                      to={`/admin/products/edit/${product.id}`}
+                      className="btn-edit"
+                    >
+                      Edit
+                    </Link>
+                  </div>
                   <button
                     onClick={() => handleDelete(product.id)}
                     className="btn-delete"
@@ -87,7 +89,6 @@ const ProductManagementPage = () => {
             ))}
           </tbody>
         </table>
-      </div>
     </div>
   );
 };

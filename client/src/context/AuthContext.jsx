@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import * as authService from "../api/authService";
+import * as cartService from "../api/cartService";
 
 const AuthContext = createContext(null);
 
@@ -25,6 +26,11 @@ export const AuthProvider = ({ children }) => {
       const data = await authService.login(username, password);
       setUser({ username: data.username, role: data.role });
       setIsAuthenticated(true);
+      try {
+        await cartService.mergeGuestCart();
+      } catch (mergeError) {
+        console.warn("Guest cart merge failed (cart may be empty):", mergeError);
+      }
       return data; // Return the data so components can access role
     } catch (error) {
       console.error(`Login failed: ${error}`);

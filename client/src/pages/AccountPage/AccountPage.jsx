@@ -3,7 +3,6 @@ import { useAuth } from "../../context/AuthContext";
 import * as addressService from "../../api/addressService";
 import AddressCard from "../../components/AddressCard";
 import AddressForm from "../../components/AddressForm";
-import Navbar from "../../components/Navbar";
 import { Link } from "react-router-dom";
 import "./AccountPage.css";
 
@@ -54,9 +53,7 @@ const AccountPage = () => {
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="account-container">
+    <div className="account-container">
         <h1>My Account</h1>
         <p>
           Welcome back, <strong>{user?.username}</strong>! (Role: {user?.role})
@@ -101,7 +98,6 @@ const AccountPage = () => {
           ))}
           {addresses.length === 0 && <p>No addresses saved.</p>}
         </div>
-      </div>
     </div>
   );
 };

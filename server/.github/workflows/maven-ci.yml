@@ -1,0 +1,30 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    -name: Set up JDK
+     uses: actions/setup-java@v4
+     with:
+        java-version: '24'
+        distribution: 'temurin'
+        caches: 'maven'
+    
+    - name: Make Maven Wrapper Executable
+      run: chmod +x mvnw
+    
+    - name: Build and Test with Maven
+      run: ./mvnw test

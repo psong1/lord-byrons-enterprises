@@ -1,7 +1,9 @@
 package com.lordbyronsenterprises.server.cart;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,42 +37,33 @@ public class CartServiceImplementation implements CartService {
     private final InventoryItemRepository inventoryItemRepository;
 
     @Override
-    public CartDto getCartForUser(User user) {
-        Cart cart = getOrCreateCart(user);
+    public CartDto getCartForUser(User user, String guestSessionToken) {
+        Cart cart = resolveCart(user, guestSessionToken);
         return cartMapper.toDto(cart);
     }
 
     @Override
-    public CartDto addItemToCart(User user, AddCartItemDto itemDto) {
-        if (user == null) {
-            throw new IllegalArgumentException("User must be authenticated to add items to cart");
-        }
-        Cart cart = getOrCreateCart(user);
+    public CartDto addItemToCart(User user, String guestSessionToken, AddCartItemDto itemDto) {
+        Cart cart = resolveCart(user, guestSessionToken);
 
         ProductVariant variant;
-        
-        // If variantId is provided, use it
+
         if (itemDto.getVariantId() != null) {
             variant = variantRepository.findById(itemDto.getVariantId())
                     .orElseThrow(() -> new EntityNotFoundException("Product variant not found"));
-            
-            // If productId was also provided, verify it matches the variant's product
+
             if (itemDto.getProductId() != null && !variant.getProduct().getId().equals(itemDto.getProductId())) {
                 throw new IllegalArgumentException("Product ID does not match the variant's product");
             }
         } else if (itemDto.getProductId() != null) {
-            // If no variantId but productId is provided, get or create a default variant
             Product product = productRepository.findById(itemDto.getProductId())
                     .orElseThrow(() -> new EntityNotFoundException("Product not found"));
-            
-            // Check if product has any variants
+
             List<ProductVariant> existingVariants = variantRepository.findByProductId(product.getId());
-            
+
             if (existingVariants.isEmpty()) {
-                // Create a default variant for this product
                 variant = createDefaultVariant(product);
             } else {
-                // Use the first available variant
                 variant = existingVariants.get(0);
             }
         } else {
@@ -107,19 +100,13 @@ public class CartServiceImplementation implements CartService {
         }
 
         recalculateCart(cart);
-        
-        // Ensure user is still set before saving (validation requirement)
-        if (cart.getUser() == null) {
-            cart.setUser(user);
-        }
-        
         Cart savedCart = cartRepository.save(cart);
         return cartMapper.toDto(savedCart);
     }
 
     @Override
-    public CartDto updateItemQuantity(User user, Long cartItemId, int quantity) {
-        Cart cart = getOrCreateCart(user);
+    public CartDto updateItemQuantity(User user, String guestSessionToken, Long cartItemId, int quantity) {
+        Cart cart = resolveCart(user, guestSessionToken);
 
         CartItem item = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new EntityNotFoundException("Cart item not found"));
@@ -129,30 +116,23 @@ public class CartServiceImplementation implements CartService {
         }
 
         if (quantity <= 0) {
-            return deleteItemFromCart(user, cartItemId);
-        } else {
-            item.setQuantity(quantity);
-            item.setUnitPrice(item.getVariant().getPrice());
-            cartItemRepository.save(item);
+            return deleteItemFromCart(user, guestSessionToken, cartItemId);
         }
+        item.setQuantity(quantity);
+        item.setUnitPrice(item.getVariant().getPrice());
+        cartItemRepository.save(item);
 
         recalculateCart(cart);
-        
-        // Ensure user is still set before saving (validation requirement)
-        if (cart.getUser() == null) {
-            cart.setUser(user);
-        }
-        
         Cart savedCart = cartRepository.save(cart);
         return cartMapper.toDto(savedCart);
     }
 
     @Override
-    public CartDto deleteItemFromCart(User user, Long cartItemId) {
-        Cart cart = getOrCreateCart(user);
+    public CartDto deleteItemFromCart(User user, String guestSessionToken, Long cartItemId) {
+        Cart cart = resolveCart(user, guestSessionToken);
 
-        CartItem item = cartItemRepository.findById(cartItemId).
-                orElseThrow(() -> new EntityNotFoundException("Cart item not found"));
+        CartItem item = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new EntityNotFoundException("Cart item not found"));
 
         if (!item.getCart().getId().equals(cart.getId())) {
             throw new SecurityException("Cannot modify item in another user's cart");
@@ -161,47 +141,86 @@ public class CartServiceImplementation implements CartService {
         cart.getItems().remove(item);
 
         recalculateCart(cart);
-        
-        // Ensure user is still set before saving (validation requirement)
-        if (cart.getUser() == null) {
-            cart.setUser(user);
-        }
-        
         Cart savedCart = cartRepository.save(cart);
         return cartMapper.toDto(savedCart);
     }
 
     @Override
     public Cart getCartEntityForUser(User user) {
-        return getOrCreateCart(user);
+        return getOrCreateUserCart(user);
     }
 
     @Override
-    public void clearCart(User user) {
-        Cart cart = getOrCreateCart(user);
+    public void clearCart(User user, String guestSessionToken) {
+        Cart cart;
+        if (user != null) {
+            cart = getOrCreateUserCart(user);
+        } else {
+            if (guestSessionToken == null || guestSessionToken.isBlank()) {
+                throw new IllegalArgumentException("Guest session token required to clear cart");
+            }
+            cart = cartRepository.findBySessionToken(guestSessionToken)
+                    .orElseThrow(() -> new EntityNotFoundException("Cart not found"));
+        }
         cart.getItems().clear();
         recalculateCart(cart);
-        
-        // Ensure user is still set before saving (validation requirement)
-        if (cart.getUser() == null) {
-            cart.setUser(user);
-        }
-        
         cartRepository.save(cart);
     }
 
-    private Cart getOrCreateCart(User user) {
+    @Override
+    public void mergeGuestCartIntoUser(User user, String guestSessionToken) {
         if (user == null) {
-            throw new IllegalArgumentException("User cannot be null when creating or retrieving cart");
+            throw new IllegalArgumentException("User must be authenticated to merge carts");
         }
+        if (guestSessionToken == null || guestSessionToken.isBlank()) {
+            return;
+        }
+        Optional<Cart> guestCartOpt = cartRepository.findBySessionToken(guestSessionToken);
+        if (guestCartOpt.isEmpty()) {
+            return;
+        }
+        Cart guestCart = guestCartOpt.get();
+        if (guestCart.getUser() != null) {
+            return;
+        }
+        List<CartItem> items = new ArrayList<>(guestCart.getItems());
+        if (items.isEmpty()) {
+            cartRepository.delete(guestCart);
+            return;
+        }
+        for (CartItem guestItem : items) {
+            AddCartItemDto dto = new AddCartItemDto();
+            dto.setVariantId(guestItem.getVariant().getId());
+            dto.setQuantity(guestItem.getQuantity());
+            addItemToCart(user, null, dto);
+        }
+        cartRepository.delete(guestCart);
+    }
+
+    private Cart resolveCart(User user, String guestSessionToken) {
+        if (user != null) {
+            return getOrCreateUserCart(user);
+        }
+        if (guestSessionToken == null || guestSessionToken.isBlank()) {
+            throw new IllegalArgumentException("Guest shopping requires an active browser session");
+        }
+        return getOrCreateGuestCart(guestSessionToken);
+    }
+
+    private Cart getOrCreateUserCart(User user) {
         return cartRepository.findByUser(user)
                 .orElseGet(() -> {
                     Cart newCart = new Cart();
                     newCart.setUser(user);
-                    // Ensure user is set before validation
-                    if (newCart.getUser() == null) {
-                        throw new IllegalStateException("Failed to set user on cart");
-                    }
+                    return cartRepository.save(newCart);
+                });
+    }
+
+    private Cart getOrCreateGuestCart(String sessionToken) {
+        return cartRepository.findBySessionToken(sessionToken)
+                .orElseGet(() -> {
+                    Cart newCart = new Cart();
+                    newCart.setSessionToken(sessionToken);
                     return cartRepository.save(newCart);
                 });
     }
@@ -216,17 +235,16 @@ public class CartServiceImplementation implements CartService {
         variant.setQuantity(productQuantity != null ? productQuantity : 0);
         variant.setCreatedAt(Instant.now());
         variant.setUpdatedAt(Instant.now());
-        
+
         ProductVariant savedVariant = variantRepository.save(variant);
-        
-        // Create inventory item for the variant
+
         InventoryItem inventoryItem = new InventoryItem();
         inventoryItem.setProductVariant(savedVariant);
         inventoryItem.setOnHand(variant.getQuantity());
         inventoryItem.setReserved(0);
         inventoryItem.setUpdatedAt(Instant.now());
         inventoryItemRepository.save(inventoryItem);
-        
+
         return savedVariant;
     }
 
@@ -240,9 +258,9 @@ public class CartServiceImplementation implements CartService {
         cart.setSubtotal(subtotal);
 
         BigDecimal taxRate = new BigDecimal("0.08");
-        BigDecimal tax = subtotal.multiply(taxRate);
+        BigDecimal tax = subtotal.multiply(taxRate).setScale(2, RoundingMode.HALF_UP);
         cart.setTax(tax);
 
-        cart.setTotal(subtotal.add(tax));
+        cart.setTotal(subtotal.add(tax).setScale(2, RoundingMode.HALF_UP));
     }
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import Navbar from "../../components/Navbar";
+import { useCart } from "../../context/CartContext";
 import "./LoginPage.css";
 
 const LoginPage = () => {
@@ -9,18 +9,20 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useAuth();
+  const { refreshCart } = useCart();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const data = await login(username, password);
+      await refreshCart();
       // Redirect based on user role
       const role = data.role || localStorage.getItem("role");
       if (role === "ADMIN") {
-        navigate("/admin");
+        navigate("/portal/dashboard");
       } else if (role === "EMPLOYEE") {
-        navigate("/employee/fulfillment");
+        navigate("/portal/fulfillment");
       } else {
         navigate("/");
       }
@@ -40,9 +42,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="auth-container">
+    <div className="auth-container">
         <h2 className="auth-title">Login</h2>
         {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit} className="auth-form">
@@ -71,7 +71,6 @@ const LoginPage = () => {
           <br />
           <Link to="/register">Register</Link>
         </p>
-      </div>
     </div>
   );
 };

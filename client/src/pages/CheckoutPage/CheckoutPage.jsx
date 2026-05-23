@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as addressService from "../../api/addressService";
 import CheckoutForm from "../../components/CheckoutForm";
-import Navbar from "../../components/Navbar";
 import { Link } from "react-router-dom";
 import "./CheckoutPage.css";
 
@@ -29,20 +28,15 @@ const CheckoutPage = () => {
 
   if (addresses.length === 0) {
     return (
-      <div>
-        <Navbar />
-        <div style={{ padding: "20px" }}>
-          You need to add an address in your <Link to="/account">Account</Link>{" "}
-          page before checking out.
-        </div>
+      <div style={{ padding: "20px" }}>
+        You need to add an address in your <Link to="/account">Account</Link>{" "}
+        page before checking out.
       </div>
     );
   }
 
   return (
-    <div>
-      <Navbar />
-      <div className="checkout-container">
+    <div className="checkout-container">
         <h1>Checkout</h1>
 
         <div className="checkout-section">
@@ -83,7 +77,6 @@ const CheckoutPage = () => {
             userToken={token}
           />
         </div>
-      </div>
     </div>
   );
 };

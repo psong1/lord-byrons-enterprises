@@ -27,3 +27,9 @@ export const removeItemFromCart = async (cartItemId) => {
 export const clearCart = async () => {
   await api.delete("/cart");
 };
+
+/** After login, merges anonymous session cart lines into the JWT user's cart. */
+export const mergeGuestCart = async () => {
+  const response = await api.post("/cart/merge");
+  return response.data;
+};

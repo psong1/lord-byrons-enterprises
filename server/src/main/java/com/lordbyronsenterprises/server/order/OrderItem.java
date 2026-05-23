@@ -1,12 +1,20 @@
 package com.lordbyronsenterprises.server.order;
 
-import lombok.Data;
-import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
-import java.math.BigDecimal;
+import lombok.Data;
 
 @Data
 @Entity
@@ -51,9 +59,9 @@ public class OrderItem {
 
     public void recalculateTotals() {
         if (quantity != null && quantity > 0 && unitPrice != null) {
-            this.lineTotal = unitPrice.multiply(new BigDecimal(quantity));
+            this.lineTotal = unitPrice.multiply(new BigDecimal(quantity)).setScale(2, RoundingMode.HALF_UP);
         } else {
-            this.lineTotal = BigDecimal.ZERO;
+            this.lineTotal = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
         }
     }
 }

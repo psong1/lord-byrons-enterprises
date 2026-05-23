@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import * as authService from "../../api/authService";
-import Navbar from "../../components/Navbar";
 import "../LoginPage/LoginPage.css";
 import "./RegisterPage.css";
 
@@ -70,9 +69,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="auth-container">
+    <div className="auth-container">
         <h2 className="auth-title">Create Account</h2>
         <form onSubmit={handleSubmit} className="auth-form">
           <input
@@ -137,7 +134,6 @@ const RegisterPage = () => {
           <br />
           <Link to="/login">Login</Link>
         </p>
-      </div>
     </div>
   );
 };
