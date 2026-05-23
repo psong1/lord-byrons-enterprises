@@ -1,123 +1,122 @@
 .admin-dashboard {
-  padding: 2rem;
   max-width: 1200px;
-  margin: 0 auto;
-  background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  color: #333;
+  margin: 40px auto;
+  padding: 0 20px;
 }
 
-.admin-dashboard h1,
-.admin-dashboard h2,
-.admin-dashboard p {
-  color: #333;
+.admin-dashboard > h1 {
+  display: inline-block;
+  margin-bottom: 24px;
+  padding: 12px 28px;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
 }
 
 .message-of-the-day {
-  margin-top: 2rem;
-  background-color: rgba(248, 249, 250, 0.9);
-  backdrop-filter: blur(10px);
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  padding: 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 28px 32px;
+  color: var(--text-primary);
 }
 
 .message-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  border-bottom: 2px solid #dee2e6;
-  padding-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .message-header h2 {
   margin: 0;
-  color: #343a40;
-  font-size: 1.5rem;
-}
-
-.edit-message-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
-}
-
-.edit-message-btn:hover {
-  background-color: #0056b3;
-}
-
-.message-display {
-  padding: 1rem 0;
+  color: var(--text-primary);
 }
 
 .message-display p {
   margin: 0;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #495057;
+  color: var(--text-primary);
+  line-height: var(--line-height);
+  font-size: 1.05rem;
 }
 
 .message-editor {
-  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .message-textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-family: inherit;
+  min-height: 120px;
   resize: vertical;
-  margin-bottom: 1rem;
-}
-
-.message-textarea:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .message-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.save-btn {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 0.5rem 1.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
-}
-
-.save-btn:hover {
-  background-color: #218838;
+.edit-message-btn {
+  min-height: 44px;
 }
 
 .cancel-btn {
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  padding: 0.5rem 1.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
+  background-color: #f5f5f7;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
-.cancel-btn:hover {
-  background-color: #5a6268;
+.cancel-btn:hover:not(:disabled) {
+  background-color: #e5e5ea;
+}
+
+.dashboard-header {
+  background-color: rgba(255, 255, 255, 0.92);
+  padding: 24px 32px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 32px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.dashboard-card {
+  background-color: var(--bg-secondary);
+  padding: 24px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-card h3 {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.dashboard-stat {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 24px;
 }

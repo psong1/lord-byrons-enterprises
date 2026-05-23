@@ -1,25 +1,22 @@
 .cart-item-row {
   display: flex;
   align-items: center;
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
-  color: #333;
-}
-
-.cart-item-title {
-  color: #333;
-}
-
-.item-total-price {
-  color: #333;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
 .cart-item-info {
   flex: 2;
+  min-width: 200px;
 }
 
 .cart-item-title {
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  color: var(--text-primary);
 }
 
 .cart-item-controls {
@@ -27,15 +24,23 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 140px;
 }
 
 .qty-btn {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 30px;
-  height: 30px;
+  background-color: #f5f5f7;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  padding: 0;
   cursor: pointer;
+}
+
+.qty-btn:hover:not(:disabled) {
+  background-color: #e5e5ea;
 }
 
 .qty-btn:disabled {
@@ -46,22 +51,27 @@
 .cart-item-total {
   flex: 1;
   text-align: right;
+  min-width: 100px;
 }
 
 .item-total-price {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
 }
 
 .remove-btn {
-  color: #dc3545;
+  color: var(--danger-red);
   background: none;
   border: none;
   cursor: pointer;
   text-decoration: underline;
-  padding: 0;
+  padding: 8px 0;
+  min-height: 44px;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .remove-btn:hover {
-  color: #a71d2a;
+  color: #b3261e;
 }

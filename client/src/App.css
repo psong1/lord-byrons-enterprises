@@ -1,42 +1,292 @@
-#root {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: 0;
+}
+
+a {
+  color: var(--accent-blue);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-blue-hover);
+  text-decoration: underline;
+}
+
+button {
+  background-color: var(--accent-blue);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--accent-blue-hover);
+  transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  background-color: #e5e5ea;
+  color: #a1a1a6;
+  cursor: not-allowed;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
   width: 100%;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 1rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.15);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.surface-card {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.storefront-content,
+.portal-content {
+  min-height: calc(100vh - 64px);
 }
 
-.card {
-  padding: 2em;
+.page-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
 }
 
-.read-the-docs {
-  color: #888;
+.page-container--narrow {
+  max-width: 480px;
+}
+
+.page-container--medium {
+  max-width: 900px;
+}
+
+.surface-panel {
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 32px;
+  color: var(--text-primary);
+}
+
+.page-header {
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.page-header h1,
+.page-header h2 {
+  margin-bottom: 0;
+}
+
+.error-message {
+  color: var(--danger-red);
+  background-color: #fce8e6;
+  border: 1px solid #f5c6cb;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+  line-height: var(--line-height);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 40px 20px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table th {
+  background-color: #f5f5f7;
+  padding: 16px 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-container {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+button.btn-secondary,
+a.btn-secondary {
+  background-color: #f5f5f7;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+button.btn-secondary:hover:not(:disabled),
+a.btn-secondary:hover {
+  background-color: #e5e5ea;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+button.btn-danger,
+a.btn-danger {
+  background-color: var(--danger-red);
+  color: #ffffff;
+}
+
+button.btn-danger:hover:not(:disabled),
+a.btn-danger:hover {
+  background-color: #b3261e;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+button.btn-success,
+a.btn-success {
+  background-color: var(--success-green);
+  color: #ffffff;
+}
+
+button.btn-success:hover:not(:disabled),
+a.btn-success:hover {
+  background-color: #0b8043;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+button.btn-outline,
+a.btn-outline {
+  background-color: transparent;
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+button.btn-outline:hover:not(:disabled),
+a.btn-outline:hover {
+  background-color: rgba(0, 102, 204, 0.08);
+  color: var(--accent-blue-hover);
+  text-decoration: none;
+}
+
+button.btn-ghost,
+a.btn-ghost {
+  background-color: transparent;
+  color: var(--danger-red);
+  border: 1px solid var(--danger-red);
+  padding: 8px 16px;
+}
+
+button.btn-ghost:hover:not(:disabled),
+a.btn-ghost:hover {
+  background-color: var(--danger-red);
+  color: #ffffff;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.status-badge.paid,
+.status-badge.success {
+  background-color: #e6f4ea;
+  color: var(--success-green);
+}
+
+.status-badge.pending {
+  background-color: #fef7e0;
+  color: #b06000;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.role-badge.role-ADMIN {
+  background-color: #e8e8ed;
+  color: var(--text-primary);
+}
+
+.role-badge.role-EMPLOYEE {
+  background-color: #e8f0fe;
+  color: var(--accent-blue);
+}
+
+.role-badge.role-CUSTOMER {
+  background-color: #e6f4ea;
+  color: var(--success-green);
 }

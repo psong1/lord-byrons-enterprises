@@ -1,39 +1,37 @@
 .order-details-container {
-  padding: 20px;
   max-width: 800px;
-  margin: 0 auto;
-  background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  color: #333;
-}
-
-.order-details-container h1,
-.order-details-container h3,
-.order-details-container p {
-  color: #333;
+  margin: 40px auto;
+  padding: 32px;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
 }
 
 .order-header {
-  border-bottom: 1px solid #eee;
-  padding-bottom: 15px;
-  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .order-section {
-  margin-bottom: 25px;
+  margin-bottom: 28px;
 }
 
 .order-item-row {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #eee;
-  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px 0;
 }
 
 .order-grand-total {
   text-align: right;
   font-size: 1.5rem;
-  margin-top: 20px;
+  font-weight: 700;
+  margin-top: 24px;
+  color: var(--text-primary);
 }

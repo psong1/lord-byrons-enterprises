@@ -1,38 +1,36 @@
 .fulfillment-page {
-  padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 20px;
-  color: #333;
-}
-
-.fulfillment-page h2,
-.fulfillment-page h4,
-.fulfillment-page p {
-  color: #333;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 32px;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
 }
 
 .order-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
 }
 
 .order-card {
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-secondary);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
 }
 
 .status-select {
-  padding: 5px;
+  min-height: 44px;
   margin-right: 10px;
 }

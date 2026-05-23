@@ -1,8 +1,9 @@
 .admin-navbar {
-  background-color: rgba(52, 58, 64, 0.85);
-  backdrop-filter: blur(10px);
+  background-color: rgba(29, 29, 31, 0.92);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   padding: 1rem 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -13,37 +14,44 @@
   margin: 0 auto;
   padding: 0 2rem;
   display: flex;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .admin-nav-link {
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease;
   font-weight: 500;
 }
 
 .admin-nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.12);
+  text-decoration: none;
+  color: #ffffff;
 }
 
 .admin-nav-link.active {
-  background-color: #007bff;
-  color: #fff;
+  background-color: var(--accent-blue);
+  color: #ffffff;
 }
 
 .admin-nav-link.active:hover {
-  background-color: #0056b3;
+  background-color: var(--accent-blue-hover);
+  color: #ffffff;
 }
 
 .admin-nav-link--storefront {
   margin-left: auto;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .admin-nav-link--storefront:hover {
   background-color: rgba(255, 255, 255, 0.15);
 }
-

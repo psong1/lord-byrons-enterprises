@@ -69,7 +69,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="auth-container">
+    <div className="auth-container surface-panel">
         <h2 className="auth-title">Create Account</h2>
         <form onSubmit={handleSubmit} className="auth-form">
           <input

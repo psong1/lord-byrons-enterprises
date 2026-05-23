@@ -2,10 +2,18 @@ import React, { useState, useEffect } from "react";
 import * as userService from "../../../api/userService";
 import "./UserManagementPage.css";
 
+const ROLE_FILTERS = [
+  { value: "ALL", label: "All" },
+  { value: "CUSTOMER", label: "Customers" },
+  { value: "EMPLOYEE", label: "Employees" },
+  { value: "ADMIN", label: "Admins" },
+];
+
 const UserManagementPage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState({});
+  const [roleFilter, setRoleFilter] = useState("ALL");
 
   useEffect(() => {
     loadUsers();
@@ -37,18 +45,49 @@ const UserManagementPage = () => {
     }
   };
 
+  const filteredUsers =
+    roleFilter === "ALL"
+      ? users
+      : users.filter((user) => user.role === roleFilter);
+
   if (loading) {
     return (
-      <div className="admin-dashboard">
+      <div className="user-management">
         <h2>User Management</h2>
-        <p>Loading users...</p>
+        <p className="user-management-loading">Loading users...</p>
       </div>
     );
   }
 
   return (
-    <div className="admin-dashboard">
+    <div className="user-management">
       <h2>User Management</h2>
+
+      <div className="um-toolbar">
+        <fieldset className="role-filter-fieldset">
+          <legend className="role-filter-legend">Filter by role</legend>
+          <div className="role-filter-group" role="group" aria-label="Filter by role">
+            {ROLE_FILTERS.map(({ value, label }) => (
+              <button
+                key={value}
+                type="button"
+                className={`role-filter-btn ${roleFilter === value ? "active" : ""}`}
+                aria-pressed={roleFilter === value}
+                onClick={() => setRoleFilter(value)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+        <p className="um-result-count" aria-live="polite">
+          Showing {filteredUsers.length} of {users.length} users
+        </p>
+      </div>
+
+      {filteredUsers.length === 0 ? (
+        <p className="empty-state">No users match this filter.</p>
+      ) : (
       <table className="user-table">
         <thead>
           <tr>
@@ -60,7 +99,7 @@ const UserManagementPage = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {filteredUsers.map((user) => (
             <tr key={user.id}>
               <td>{user.id}</td>
               <td>{user.username}</td>
@@ -89,6 +128,7 @@ const UserManagementPage = () => {
           ))}
         </tbody>
       </table>
+      )}
     </div>
   );
 };

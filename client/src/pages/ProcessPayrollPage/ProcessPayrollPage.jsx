@@ -110,7 +110,7 @@ const ProcessPayrollPage = () => {
 
   return (
     <div className="process-payroll-page">
-      <h2 className="process-payroll-title">Process Payroll</h2>
+      <h2>Process Payroll</h2>
       {error && <p className="error-message">{error}</p>}
 
       <form className="payroll-form" onSubmit={handleProcess}>

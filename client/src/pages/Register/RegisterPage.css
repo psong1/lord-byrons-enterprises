@@ -1,8 +1,9 @@
 .register-btn {
-  background-color: #28a745; /* Green for register */
+  background-color: var(--success-green);
+  min-height: 44px;
+  width: 100%;
 }
 
-.register-btn:hover {
-  background-color: #218838;
+.register-btn:hover:not(:disabled) {
+  background-color: #0b8043;
 }
-/* Include other styles from LoginPage.css if not sharing a common file */

@@ -69,21 +69,22 @@ const ProductManagementPage = () => {
                 <td>{product.name}</td>
                 <td>${product.price.toFixed(2)}</td>
                 <td>{product.quantity}</td>
-                <td>
+                <td className="actions-cell">
                   <div className="action-buttons">
                     <Link
                       to={`/admin/products/edit/${product.id}`}
-                      className="btn-edit"
+                      className="btn-action btn-edit"
                     >
                       Edit
                     </Link>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(product.id)}
+                      className="btn-action btn-delete"
+                    >
+                      Delete
+                    </button>
                   </div>
-                  <button
-                    onClick={() => handleDelete(product.id)}
-                    className="btn-delete"
-                  >
-                    Delete
-                  </button>
                 </td>
               </tr>
             ))}

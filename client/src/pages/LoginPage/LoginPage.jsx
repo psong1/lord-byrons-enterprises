@@ -42,7 +42,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="auth-container">
+    <div className="auth-container surface-panel">
         <h2 className="auth-title">Login</h2>
         {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit} className="auth-form">

@@ -1,64 +1,156 @@
-/* Can reuse product-table styles or create new ones */
-.admin-dashboard {
-  color: #333;
+.user-management {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  color: var(--text-primary);
 }
 
-.admin-dashboard h2 {
-  color: #333;
+.user-management > h2 {
+  margin-bottom: 24px;
+  background-color: rgba(255, 255, 255, 0.92);
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.user-management-loading {
+  background-color: rgba(255, 255, 255, 0.92);
+  padding: 24px 32px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.um-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 20px 24px;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.role-filter-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.role-filter-legend {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+  padding: 0;
+}
+
+.role-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.role-filter-btn {
+  min-height: 44px;
+  padding: 10px 18px;
+  background-color: #f5f5f7;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.role-filter-btn:hover {
+  background-color: #e5e5ea;
+  color: var(--text-primary);
+}
+
+.role-filter-btn.active {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #ffffff;
+}
+
+.role-filter-btn.active:hover {
+  background-color: var(--accent-blue-hover);
+  border-color: var(--accent-blue-hover);
+  color: #ffffff;
+}
+
+.um-result-count {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.user-management .empty-state {
+  background-color: rgba(255, 255, 255, 0.92);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
 }
 
 .user-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .user-table th,
 .user-table td {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
   text-align: left;
+  color: var(--text-primary);
 }
 
-.role-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: bold;
-}
-
-.role-ADMIN {
-  background-color: #e2e3e5;
-  color: #383d41;
-}
-.role-EMPLOYEE {
-  background-color: #cce5ff;
-  color: #004085;
-}
-.role-CUSTOMER {
-  background-color: #d4edda;
-  color: #155724;
+.user-table th {
+  background-color: #f5f5f7;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .role-select {
-  padding: 6px 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.9rem;
+  min-height: 44px;
+  width: auto;
+  min-width: 140px;
   cursor: pointer;
-  columns: #333;
 }
 
 .role-select:disabled {
-  background-color: #f5f5f5;
+  background-color: #f5f5f7;
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .updating-text {
   margin-left: 8px;
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-secondary);
   font-style: italic;
-  color: #333;
 }
