@@ -38,3 +38,12 @@
   background-color: #0056b3;
 }
 
+.admin-nav-link--storefront {
+  margin-left: auto;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.admin-nav-link--storefront:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+

@@ -40,14 +40,19 @@ body {
   padding: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-image: url('./assets/images/lbe_bg.jpg');
+  background-image: url("./assets/images/lbe_bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: #333;
 }
 

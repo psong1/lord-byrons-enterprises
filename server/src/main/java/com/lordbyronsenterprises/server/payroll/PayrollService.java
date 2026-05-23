@@ -9,4 +9,5 @@ public interface PayrollService {
     List<PayrollDto> getAllPayrolls();
     List<PaycheckDto> getPaychecksByPayrollId(Long payrollId);
     PayrollDto processPayroll(User admin, ProcessPayrollRequestDto request);
+    PaycheckDto disbursePaycheck(Long paycheckId);
 }

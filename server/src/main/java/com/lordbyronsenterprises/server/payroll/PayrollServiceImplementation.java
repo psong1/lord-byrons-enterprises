@@ -83,14 +83,19 @@ public class PayrollServiceImplementation implements PayrollService {
     }
 
     private Paycheck buildPaycheck(User emp, Payroll payroll) {
-        BigDecimal gross = new BigDecimal("2000.00");
-        BigDecimal deductions = gross.multiply(new BigDecimal("0.22"));
+        BigDecimal hourlyRate = new BigDecimal("15.00");
+        BigDecimal hoursWorked = new BigDecimal("40.00");
+
+        BigDecimal gross = hourlyRate.multiply(hoursWorked);
+
+        BigDecimal nibDeduction = gross.multiply(new BigDecimal("0.034"));
+
         Paycheck pc = new Paycheck();
         pc.setEmployee(emp);
         pc.setPayroll(payroll);
         pc.setGrossPay(gross);
-        pc.setDeductions(deductions);
-        pc.setNetPay(gross.subtract(deductions));
+        pc.setDeductions(nibDeduction);
+        pc.setNetPay(gross.subtract(nibDeduction));
         pc.setStatus(PaycheckStatus.PENDING);
         return pc;
     }
@@ -106,5 +111,20 @@ public class PayrollServiceImplementation implements PayrollService {
                 .map(paycheckMapper::toDto)
                 .toList());
         return dto;
+    }
+
+    @Override
+    public PaycheckDto disbursePaycheck(Long paycheckId) {
+        Paycheck paycheck = paycheckRepository.findById(paycheckId)
+            .orElseThrow(() -> new RuntimeException("Paycheck not found with ID: " + paycheckId));
+        
+        if (paycheck.getStatus() == PaycheckStatus.PAID) {
+            throw new IllegalStateException("This paycheck has already been disbursed.");        
+        }
+
+        paycheck.setStatus(PaycheckStatus.PAID);
+
+        Paycheck saved = paycheckRepository.save(paycheck);
+        return paycheckMapper.toDto(saved);
     }
 }

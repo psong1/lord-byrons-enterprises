@@ -23,3 +23,8 @@ export const processPayroll = async (payload) => {
   const response = await api.post("/payroll/process", payload);
   return response.data;
 };
+
+export const disbursePaycheck = async (paycheckId) => {
+  const response = await api.put(`/paychecks/${paycheckId}/disburse`);
+  return response.data;
+};

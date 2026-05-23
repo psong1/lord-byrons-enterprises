@@ -1,0 +1,235 @@
+.process-payroll-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.process-payroll-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.error-message {
+  color: #ef4444;
+  background-color: #fee2e2;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+/* Form Styles */
+.payroll-form {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.form-input {
+  display: block;
+  margin-top: 5px;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+
+.employee-fieldset {
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.employee-checkbox-label {
+  display: block;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.employee-checkbox-label input {
+  margin-right: 10px;
+}
+
+.submit-btn {
+  background-color: #3b82f6;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.submit-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.divider {
+  margin: 40px 0;
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Ledger Layout */
+.ledger-container {
+  display: flex;
+  gap: 40px;
+}
+
+.ledger-sidebar {
+  flex: 1;
+}
+
+.ledger-main {
+  flex: 2;
+  background-color: #f9fafb;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Sidebar List */
+.payroll-list {
+  list-style: none;
+  padding: 0;
+}
+
+.payroll-list-item {
+  margin-bottom: 10px;
+}
+
+.payroll-run-btn {
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  background-color: #f3f4f6;
+  color: #000000;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.payroll-run-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.payroll-run-btn.active {
+  background-color: #e0e7ff;
+  border-color: #818cf8;
+}
+
+/* Summary Cards */
+.empty-state {
+  color: #6b7280;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.summary-cards {
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border-left: 4px solid #3b82f6;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-label {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.summary-value {
+  margin: 0;
+}
+
+.summary-value.pending {
+  color: #ef4444;
+}
+
+.summary-value.success {
+  color: #10b981;
+}
+
+/* Ledger Table */
+.ledger-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.ledger-table th,
+.ledger-table td {
+  padding: 12px;
+  text-align: left;
+}
+
+.ledger-table th {
+  background-color: #f3f4f6;
+  border-bottom: 2px solid #e5e7eb;
+  font-weight: 600;
+}
+
+.ledger-table tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.ledger-table tr:last-child {
+  border-bottom: none;
+}
+
+.deduction-text {
+  color: #ef4444;
+}
+
+.net-pay-text {
+  font-weight: bold;
+}
+
+.align-right {
+  text-align: right !important;
+}
+
+/* Action Buttons & Badges */
+.disburse-btn {
+  background-color: #3b82f6;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.disburse-btn:hover {
+  background-color: #2563eb;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  font-weight: bold;
+}
+
+.status-badge.paid {
+  color: #10b981;
+}

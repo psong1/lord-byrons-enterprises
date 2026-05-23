@@ -53,6 +53,9 @@ const AdminNavbar = () => {
             </Link>
           </>
         )}
+        <Link to="/" className="admin-nav-link admin-nav-link--storefront">
+          Storefront
+        </Link>
       </div>
     </nav>
   );
