@@ -1,6 +1,7 @@
 package com.lordbyronsenterprises.server.payroll;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
@@ -86,16 +87,17 @@ public class PayrollServiceImplementation implements PayrollService {
         BigDecimal hourlyRate = new BigDecimal("15.00");
         BigDecimal hoursWorked = new BigDecimal("40.00");
 
-        BigDecimal gross = hourlyRate.multiply(hoursWorked);
+        BigDecimal gross = hourlyRate.multiply(hoursWorked).setScale(2, RoundingMode.HALF_UP);
 
-        BigDecimal nibDeduction = gross.multiply(new BigDecimal("0.034"));
+        BigDecimal nibDeduction = gross.multiply(new BigDecimal("0.034")).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal netPay = gross.subtract(nibDeduction).setScale(2, RoundingMode.HALF_UP);
 
         Paycheck pc = new Paycheck();
         pc.setEmployee(emp);
         pc.setPayroll(payroll);
         pc.setGrossPay(gross);
         pc.setDeductions(nibDeduction);
-        pc.setNetPay(gross.subtract(nibDeduction));
+        pc.setNetPay(netPay);
         pc.setStatus(PaycheckStatus.PENDING);
         return pc;
     }

@@ -38,6 +38,14 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<UserDto> getCurrentUser(@AuthenticationPrincipal User user) {
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(userMapper.toDto(user));
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or authentication.principal.id == #id")
     public ResponseEntity<UserDto> getById(@PathVariable Long id) {

@@ -1,10 +1,13 @@
 package com.lordbyronsenterprises.server.product;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 public interface ProductService {
-    List<ProductDto> getAllProducts();
+    Page<ProductDto> getAllProducts(Pageable pageable);
+
     Optional<ProductDto> getProductById(Long id);
     ProductDto createProduct(ProductDto product);
     ProductDto updateProduct(Long id, ProductDto product);

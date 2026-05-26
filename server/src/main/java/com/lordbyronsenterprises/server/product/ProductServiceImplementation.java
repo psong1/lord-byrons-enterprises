@@ -1,14 +1,15 @@
 package com.lordbyronsenterprises.server.product;
 
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
+import java.util.Optional;
+
 import org.owasp.encoder.Encode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -21,11 +22,9 @@ public class ProductServiceImplementation implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ProductDto> getAllProducts() {
-        return productRepository.findAll()
-                .stream()
-                .map(productMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<ProductDto> getAllProducts(Pageable pageable) {
+        final Page<Product> productPage = productRepository.findAll(pageable);
+        return productPage.map(productMapper::toDto);
     }
 
     @Override

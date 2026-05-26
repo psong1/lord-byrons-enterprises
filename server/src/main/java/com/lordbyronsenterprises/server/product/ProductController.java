@@ -4,8 +4,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping("/product")
@@ -18,8 +19,13 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductDto> getAll() {
-        return productService.getAllProducts();
+    public ResponseEntity<Page<ProductDto>> getAllProducts(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "12") int size
+    ) {
+        final Pageable pageable = PageRequest.of(page, size);
+        final Page<ProductDto> products = productService.getAllProducts(pageable);
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")

@@ -1,5 +1,8 @@
 package com.lordbyronsenterprises.server.user;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Email;
@@ -38,4 +41,12 @@ public class CreateUserDto {
 
     @JsonProperty("role")
     private Role role;
+
+    public void setFirstName(String firstName) {
+        this.firstName = Jsoup.clean(firstName, Safelist.none());
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = Jsoup.clean(lastName, Safelist.none());
+    }
 }

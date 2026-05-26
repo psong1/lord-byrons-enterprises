@@ -12,10 +12,13 @@ public interface UserMapper {
 
     UserDto toDto(User user);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "password", ignore = true)
     User toEntity(CreateUserDto dto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "password", ignore = true)
     void updateEntityFromDto(UpdateUserDto dto, @MappingTarget User user);
 
 //    public UserDto toDto(User user) {

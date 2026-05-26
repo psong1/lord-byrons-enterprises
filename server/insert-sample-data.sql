@@ -18,20 +18,21 @@ INSERT INTO category (name, description) VALUES
 -- ============================================
 -- INSERT USERS
 -- ============================================
+-- Sample login password for all pseudo users: Password123
 INSERT INTO user (first_name, last_name, username, email, password, role) VALUES
 -- Pseudo Admin
-('John', 'Admin', 'admin', 'admin@lordbyrons.com', '$2a$10$/13yhTxKDTkwDpIf3PibYOQKlUMOXp.Yk.h97JeDfTryxJ2BxeZCm', 'ADMIN'),
+('John', 'Admin', 'admin', 'admin@lordbyrons.com', '$2a$10$WMbl5aL6in4Ef/UtMHTLGOeFSDNG/.x9FOma7tWInVQE0/UMxdUAi', 'ADMIN'),
 
 -- Pseudo Employee
-('Sarah', 'Employee', 'employee1', 'employee1@lordbyrons.com', '$2a$10$/13yhTxKDTkwDpIf3PibYOQKlUMOXp.Yk.h97JeDfTryxJ2BxeZCm', 'EMPLOYEE'),
-('Mike', 'Worker', 'employee2', 'employee2@lordbyrons.com', '$2a$10$/13yhTxKDTkwDpIf3PibYOQKlUMOXp.Yk.h97JeDfTryxJ2BxeZCm', 'EMPLOYEE'),
+('Sarah', 'Employee', 'employee1', 'employee1@lordbyrons.com', '$2a$10$WMbl5aL6in4Ef/UtMHTLGOeFSDNG/.x9FOma7tWInVQE0/UMxdUAi', 'EMPLOYEE'),
+('Mike', 'Worker', 'employee2', 'employee2@lordbyrons.com', '$2a$10$WMbl5aL6in4Ef/UtMHTLGOeFSDNG/.x9FOma7tWInVQE0/UMxdUAi', 'EMPLOYEE'),
 
 -- Pseudo Customer
-('Alice', 'Customer', 'alice', 'alice@example.com', '$2a$10$/13yhTxKDTkwDpIf3PibYOQKlUMOXp.Yk.h97JeDfTryxJ2BxeZCm', 'CUSTOMER'),
-('Bob', 'Smith', 'bob', 'bob@example.com', '$2a$10$/13yhTxKDTkwDpIf3PibYOQKlUMOXp.Yk.h97JeDfTryxJ2BxeZCm', 'CUSTOMER'),
-('Charlie', 'Brown', 'charlie', 'charlie@example.com', '$2a$10$/13yhTxKDTkwDpIf3PibYOQKlUMOXp.Yk.h97JeDfTryxJ2BxeZCm', 'CUSTOMER'),
-('Diana', 'Prince', 'diana', 'diana@example.com', '$2a$10$/13yhTxKDTkwDpIf3PibYOQKlUMOXp.Yk.h97JeDfTryxJ2BxeZCm', 'CUSTOMER'),
-('Edward', 'Norton', 'edward', 'edward@example.com', '$2a$10$/13yhTxKDTkwDpIf3PibYOQKlUMOXp.Yk.h97JeDfTryxJ2BxeZCm', 'CUSTOMER');
+('Alice', 'Customer', 'alice', 'alice@example.com', '$2a$10$WMbl5aL6in4Ef/UtMHTLGOeFSDNG/.x9FOma7tWInVQE0/UMxdUAi', 'CUSTOMER'),
+('Bob', 'Smith', 'bob', 'bob@example.com', '$2a$10$WMbl5aL6in4Ef/UtMHTLGOeFSDNG/.x9FOma7tWInVQE0/UMxdUAi', 'CUSTOMER'),
+('Charlie', 'Brown', 'charlie', 'charlie@example.com', '$2a$10$WMbl5aL6in4Ef/UtMHTLGOeFSDNG/.x9FOma7tWInVQE0/UMxdUAi', 'CUSTOMER'),
+('Diana', 'Prince', 'diana', 'diana@example.com', '$2a$10$WMbl5aL6in4Ef/UtMHTLGOeFSDNG/.x9FOma7tWInVQE0/UMxdUAi', 'CUSTOMER'),
+('Edward', 'Norton', 'edward', 'edward@example.com', '$2a$10$WMbl5aL6in4Ef/UtMHTLGOeFSDNG/.x9FOma7tWInVQE0/UMxdUAi', 'CUSTOMER');
 
 -- ============================================
 -- INSERT PRODUCTS
